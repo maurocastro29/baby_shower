@@ -1,0 +1,33 @@
+img{
+    width: 200px;
+    height: 200px;
+}
+
+.articulos{
+    display: inline-block;
+    position: relative;
+    width: 230px;
+    height: 360px;
+    margin: 5px;
+    padding: 20px;
+    border: 1px solid #c0bfbf;
+    border-radius: 5px ;
+    background-color: #c4caff;
+}
+
+.barra-superior{
+    display: block;
+    background-color: #c0bfbf;
+    width: auto;
+    height: 65px;
+    margin-bottom: 15px;
+}
+
+.btn-cerrar-sesion{
+    display: inline-block;
+
+}
+
+.borde-inferior{
+    border-bottom: 1px solid #c0bfbf;
+}

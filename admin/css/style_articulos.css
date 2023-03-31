@@ -1,0 +1,32 @@
+img{
+    width: 200px;
+    height: 200px;
+    border-radius: 3px;
+}
+
+.articulo-no-seleccionado{
+    display: inline-block;
+    position: relative;
+    width: 230px;
+    height: 340px;
+    margin: 5px;
+    padding: 20px;
+    border: 1px solid #c0bfbf;
+    border-radius: 5px ;
+    background-color: #e6e6e6;
+}
+.articulo-seleccionado{
+    display: inline-block;
+    position: relative;
+    width: 230px;
+    height: 340px;
+    margin: 5px;
+    padding: 20px;
+    border: 1px solid #c0bfbf;
+    border-radius: 5px ;
+    background-color: #c4caff;
+}
+.tarjetas{
+    display: flex;
+    float: left;
+}
