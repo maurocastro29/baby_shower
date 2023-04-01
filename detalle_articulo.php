@@ -11,7 +11,7 @@ if (!empty($_POST)) {
   $sql = "UPDATE articulos SET id_usuario = 3 WHERE id_articulo = '$idArticulo'";
   $result = mysqli_query($conexion, $sql);
   if ($result) {
-    $alert = '<div class="alert alert-success" role="alert">
+    $alert = '<div class="alert alert-danger" role="alert">
                 Articulo eliminado
                 </div>';
   } else {
@@ -29,6 +29,7 @@ if (!empty($_POST)) {
   <title>Lista de Artículos</title>
   <!-- Agrega las bibliotecas de Bootstrap -->
 
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -37,14 +38,25 @@ if (!empty($_POST)) {
 </head>
 
 <body>
+  <div class="titulo text-center">
+    <div>
+      <h1 class="titulo-babyshower">BABY SHOWER</h1>
+      <h3 style="font-family: cursive;" class="nombre-bebe">(Nombre bebé)</h3>
+    </div>
+
+  </div>
 
   <nav class="navbar navbar-light bg-light justify-content-between mb-3 borde-inferior">
-    <a href="index.php" class="navbar-brand">Lista de articulos</a>
-    <div>
-      <a class="btn btn-primary btn-cerrar-sesion" href="logout.php">Cerrar sesión</a>
+    <div class="container">
+      <a href="index.php" class="navbar-brand">Ver lista de articulos</a>
+      <div>
+        <a class="btn btn-primary btn-cerrar-sesion" href="logout.php">Cerrar sesión</a>
+      </div>
     </div>
   </nav>
-
+  <div class="container">
+    <p class="text-usuario"><?php echo $_SESSION['nombre']; ?> estos son los articulo que has seleccionado...</p>
+  </div>
 
   <div class="container">
     <div class="card">
@@ -52,7 +64,7 @@ if (!empty($_POST)) {
         Arículos seleccionados
       </div>
       <div class="card-body justify-content-center">
-      <?php echo isset($alert) ? $alert : ''; ?>
+        <?php echo isset($alert) ? $alert : ''; ?>
         <?php
         // Conexión a la base de datos
         include('conexion.php');
@@ -93,14 +105,14 @@ if (!empty($_POST)) {
 
   </div>
   <footer class="py-4 bg-light mt-auto">
-        <div class="container-fluid px-4">
-            <div class="d-flex align-items-center justify-content-center small">
-                <div class="text-muted">
-                    Copyright &copy; <a target="_blank" href="https://www.linkedin.com/in/mauricio-castro-52b38b181/"> Mauricio Castro 2023</a>
-                </div>
-            </div>
+    <div class="container-fluid px-4">
+      <div class="d-flex align-items-center justify-content-center small">
+        <div class="text-muted">
+          Copyright &copy; <a target="_blank" href="https://www.linkedin.com/in/mauricio-castro-52b38b181/"> Mauricio Castro 2023</a>
         </div>
-    </footer>
+      </div>
+    </div>
+  </footer>
 </body>
 
 </html>

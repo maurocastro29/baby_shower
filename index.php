@@ -29,6 +29,7 @@ if (!empty($_POST)) {
   <title>Lista de Artículos</title>
   <!-- Agrega las bibliotecas de Bootstrap -->
 
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -37,15 +38,29 @@ if (!empty($_POST)) {
 </head>
 
 <body>
+  
+  <div class="titulo text-center">
+    <div>
+      <h1 class="titulo-babyshower">BABY SHOWER</h1>
+      <h3 style="font-family: cursive;" class="nombre-bebe">(Nombre bebé)</h3>
+    </div>
+
+  </div>
+
 
   <nav class="navbar navbar-light bg-light justify-content-between mb-3 borde-inferior">
-    <a href="detalle_articulo.php" class="navbar-brand">Seleccionados</a>
-    <div>
-      <a class="btn btn-primary btn-cerrar-sesion" href="logout.php">Cerrar sesión</a>
+    <div class="container">
+      <a href="detalle_articulo.php" class="navbar-brand">Ver seleccionados</a>
+      <div>
+        <a class="btn btn-primary btn-cerrar-sesion" href="logout.php">Cerrar sesión</a>
+      </div>
     </div>
+
   </nav>
 
-
+  <div class="container">
+    <p class="text-usuario">Hola <?php echo $_SESSION['nombre']; ?> Bienvenido. Puedes elejir el artículo que desees</p>
+  </div>
   <div class="container">
     <div class="card">
       <div class="card-header">
@@ -63,7 +78,7 @@ if (!empty($_POST)) {
         if (mysqli_num_rows($resultado) > 0) {
           // Muestra los datos de la tabla
           echo isset($alert) ? $alert : '';
-          echo '<div class="row ">';
+          echo '<div class="row justify-content-center">';
 
           while ($fila = mysqli_fetch_assoc($resultado)) {
         ?>
@@ -83,7 +98,7 @@ if (!empty($_POST)) {
 
           echo '</div>';
         } else {
-          echo "0 resultados";
+          echo '<div class="text-center">Todos los artículos han sido seleccionados</div>';
         }
 
         ?>

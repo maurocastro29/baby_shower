@@ -31,3 +31,24 @@ img{
 .borde-inferior{
     border-bottom: 1px solid #c0bfbf;
 }
+
+.titulo{
+    background-color: #c4caff;
+    padding: 10px;
+}
+
+h1{
+    font-family: 'Pacifico', cursive;
+}
+
+.mensaje-usuario{
+    background-color: #c4caff;
+    padding: 10px;
+}
+.nombre-bebe{
+    color: #5a5a5a;
+}
+
+.titulo-babyshower{
+    color: #0069D9;
+}

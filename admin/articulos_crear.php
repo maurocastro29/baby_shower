@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (empty($_SESSION['userActive'])) {
-    header('location: login.php');
+    header('location: ../login.php');
 }
 if ($_SESSION['id_tipo'] != 1) {
     header('location: ../');
