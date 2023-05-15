@@ -1,15 +1,28 @@
 <?php
 session_start();
-if (empty($_SESSION['userActive'])) {
+if (empty($_SESSION['userBabyShowerActive'])) {
     header('location: ../login.php');
 }
 if ($_SESSION['id_tipo'] != 1) {
     header('location: ../');
 }
 
-if (empty($_REQUEST['id'])) {
-    header('location: articulos.php');
+if (empty($_POST)) {
+    include('../conexion.php');
+    $idArticulo = $_REQUEST['quitar'];
+    $sql = "UPDATE articulos SET id_usuario = 3 WHERE id_articulo = '$idArticulo'";
+    $result = mysqli_query($conexion, $sql);
+    if ($result) {
+        $alert = '<div class="alert alert-primary" role="alert">
+                       Articulo retirado exitosamente
+                    </div>';
+    } else {
+        $alert = '<div class="alert alert-danger" role="alert">
+                    Error al retirar articulo
+                </div>';
+    }
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -54,11 +67,10 @@ if (empty($_REQUEST['id'])) {
                         <div class="card-body">
                             <?php
                             // Conexión a la base de datos
-
                             include('../conexion.php');
 
                             // Consulta para obtener los datos de la tabla
-                            $idArticulo = $_REQUEST['id'];
+                            $idArticulo = isset($_REQUEST['id']) ? $_REQUEST['id'] : $_REQUEST['quitar'];
                             $sql = "SELECT a.*, u.* FROM articulos AS a INNER JOIN usuarios AS u ON u.id_usuario = a.id_usuario WHERE a.id_articulo = '$idArticulo'";
                             $resultado = mysqli_query($conexion, $sql);
 
@@ -72,19 +84,22 @@ if (empty($_REQUEST['id'])) {
                                     <div class="row justify-content-center">
                                         <div class="col-sm-3 col-md-4">
                                             <div class="articulos">
-                                                <img src="<?php echo $fila["imagen"]; ?>" class="img-fluid">
+                                                <img src="imagenes/<?php echo $fila["imagen"]; ?>" class="img-fluid">
                                                 <h5 class="card-title"><?php echo $fila["nombre"]; ?></h5>
                                                 <p class="card-text"><?php echo $fila["detalle"]; ?></p>
                                             </div>
                                         </div>
-                                        <div class="col-sm-3 col-md-4">
+                                        <div class="col-sm-3 col-md-4 text-center">
                                             <div class="">
                                                 <?php if ($fila["id_usuario"] != 3) { ?>
                                                     <div class=" btn btn-success">
-                                                        <h5 class="card-title">Artículo elejido por:</h5><br>
+                                                        <h5 class="card-title">Artículo elegido por:</h5><br>
                                                         <p class="card-text"><?php echo $fila["nombres"] . ' ' . $fila["apellidos"]; ?></p>
-                                                    </div>
 
+                                                    </div>
+                                                    <form action="articulos_detalle.php?quitar=<?php echo $idArticulo; ?>" method="post">
+                                                        <button class="btn btn-primary mt-5">Retirar articulo</button>
+                                                    </form>
                                                 <?php } else { ?>
                                                     <h5 class="card-title btn btn-danger">Este articulo aún no ha sido seleccionado por ningún usuario</h5>
                                                 <?php } ?>

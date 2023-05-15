@@ -7,7 +7,7 @@ img{
     display: inline-block;
     position: relative;
     width: 230px;
-    height: 360px;
+    height: auto;
     margin: 5px;
     padding: 20px;
     border: 1px solid #c0bfbf;

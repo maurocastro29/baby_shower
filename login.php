@@ -1,7 +1,7 @@
 <?php
 session_start();
 date_default_timezone_set('America/Bogota');
-if (!empty($_SESSION['userActive'])) {
+if (!empty($_SESSION['userBabyShowerActive'])) {
     header('location: index.php');
 } else {
     if (!empty($_POST)) {
@@ -20,7 +20,7 @@ if (!empty($_SESSION['userActive'])) {
             if ($resultado > 0) {
                 date_default_timezone_set('America/Bogota');
                 $dato = mysqli_fetch_array($query);
-                $_SESSION['userActive'] = true;
+                $_SESSION['userBabyShowerActive'] = true;
                 $_SESSION['idUser'] =  $dato['id_usuario'];
                 $_SESSION['nombre'] = $dato['nombres'];
                 $_SESSION['apellido'] = $dato['apellidos'];
@@ -34,7 +34,7 @@ if (!empty($_SESSION['userActive'])) {
 
                 if ($_SESSION['id_tipo'] == 1) {
                     mysqli_query($conexion, $sql_update);
-                    header('location: admin/index.php');
+                    header('location: ./admin/index.php');
                 } else if ($_SESSION['id_tipo'] == 2) {
                     mysqli_query($conexion, $sql_update);
                     header('location: index.php');

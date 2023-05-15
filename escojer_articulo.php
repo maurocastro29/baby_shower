@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (empty($_SESSION['userActive'])) {
+if (empty($_SESSION['userBabyShowerActive'])) {
   header('location: login.php');
 }
 
@@ -8,7 +8,7 @@ if(isset($_REQUEST['id'])){
   include('conexion.php');
   $idArticulo = $_REQUEST['id'];
   $idUsuario = $_SESSION['idUser'];
-  $sql = "UPDATE articulos SET id_usuario = '$idUsuario' WHERE id_articulo = '$idArticulo'";
+  $sql = "UPDATE articulos SET id_usuario = '$idUsuario' WHERE id_articulo = '$idArticulo' AND estado = 1";
   $result = mysqli_query($conexion, $sql);
   if($result){
     header('Location: index.php');

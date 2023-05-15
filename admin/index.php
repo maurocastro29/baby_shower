@@ -1,6 +1,6 @@
 <?php
     session_start();
-    if (empty($_SESSION['userActive'])) {
+    if (empty($_SESSION['userBabyShowerActive'])) {
         header('location: ../login.php');
     }
     if ($_SESSION['id_tipo'] != 1) {
@@ -71,14 +71,14 @@
                         </div>
                         <div class="col-xl-3 col-md-6">
                             <div class="card bg-success text-white mb-4">
-                                <div class="card-body">Artículos elejidos</div>
+                                <div class="card-body">Artículos elegidos</div>
                                 <div class="card-footer d-flex align-items-center justify-content-between">
                                     <?php
                                         include('../conexion.php');
-                                        $sql = "SELECT count(*) AS articulos_elejidos FROM articulos WHERE id_usuario <> 3";
+                                        $sql = "SELECT count(*) AS articulos_elegidos FROM articulos WHERE id_usuario <> 3";
                                         $result = mysqli_query($conexion, $sql);
                                         if($dato = mysqli_fetch_array($result)){
-                                            echo '<spam>Total: '.$dato['articulos_elejidos'].'</spam>';
+                                            echo '<spam>Total: '.$dato['articulos_elegidos'].'</spam>';
                                         }
                                     ?>
                                 </div>
@@ -86,14 +86,14 @@
                         </div>
                         <div class="col-xl-3 col-md-6">
                             <div class="card bg-warning text-white mb-4">
-                                <div class="card-body">Artículos no elejidos</div>
+                                <div class="card-body">Artículos no elegidos</div>
                                 <div class="card-footer d-flex align-items-center justify-content-between">
                                 <?php
                                         include('../conexion.php');
-                                        $sql = "SELECT count(*) AS articulos_elejidos FROM articulos WHERE id_usuario = 3";
+                                        $sql = "SELECT count(*) AS articulos_elegidos FROM articulos WHERE id_usuario = 3";
                                         $result = mysqli_query($conexion, $sql);
                                         if($dato = mysqli_fetch_array($result)){
-                                            echo '<spam>Total: '.$dato['articulos_elejidos'].'</spam>';
+                                            echo '<spam>Total: '.$dato['articulos_elegidos'].'</spam>';
                                         }
                                     ?>
                                 </div>

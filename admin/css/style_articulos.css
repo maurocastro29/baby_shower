@@ -1,16 +1,27 @@
 img{
-    width: 200px;
-    height: 200px;
-    border-radius: 3px;
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.div-img{
+    text-align: center;
 }
 
 .articulo-no-seleccionado{
     display: inline-block;
     position: relative;
-    width: 230px;
-    height: 340px;
+    width: auto;
+    height: auto;
+    max-width: 220px;
+    min-width: 220px;
+    min-height: 280px;
     margin: 5px;
-    padding: 20px;
+    padding-top: 20px;
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-bottom: 10px;
     border: 1px solid #c0bfbf;
     border-radius: 5px ;
     background-color: #e6e6e6;
@@ -18,10 +29,16 @@ img{
 .articulo-seleccionado{
     display: inline-block;
     position: relative;
-    width: 230px;
-    height: 340px;
+    width: auto;
+    height: auto;
+    max-width: 220px;
+    min-width: 220px;
+    min-height: 280px;
     margin: 5px;
-    padding: 20px;
+    padding-top: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
     border: 1px solid #c0bfbf;
     border-radius: 5px ;
     background-color: #c4caff;
@@ -29,4 +46,40 @@ img{
 .tarjetas{
     display: flex;
     float: left;
+}
+
+.div-iconos{
+    display: block;
+    position: relative;
+    height: auto;
+    top:-10px;
+    
+}
+.icono-der{
+    display: block;
+    position: relative;
+    float: right;
+    background-color: rgb(226, 51, 51);
+    color: #FFFFFF;
+    border-radius: 50%;
+    padding: 2px;
+    top: 5px;
+    border: 1px solid red;
+}
+
+.icono-der-eliminados{
+    position: relative;
+    float: right;
+    bottom: 0px;
+    color: #FFFFFF;
+    border-radius: 50%;
+    padding: 3px;
+    background-color: rgb(15, 121, 29);
+}
+
+.img-editar{
+    position: relative;
+    top: 25px;
+    width: 250px;
+    height: 250px;
 }

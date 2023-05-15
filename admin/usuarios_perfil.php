@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (empty($_SESSION['userActive'])) {
+if (empty($_SESSION['userBabyShowerActive'])) {
     header('location: .phplogin.php');
 }
 if ($_SESSION['id_tipo'] != 1) {

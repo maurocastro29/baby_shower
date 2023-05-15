@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (empty($_SESSION['userActive'])) {
+if (empty($_SESSION['userBabyShowerActive'])) {
   header('location: login.php');
 }
 
@@ -8,11 +8,11 @@ if (!empty($_POST)) {
   include('conexion.php');
   $idArticulo = $_POST['idArticulo'];
   $idUsuario = $_SESSION['idUser'];
-  $sql = "UPDATE articulos SET id_usuario = '$idUsuario' WHERE id_articulo = '$idArticulo'";
-  $result = mysqli_query($conexion, $sql);
-  if ($result) {
+  $sql = "UPDATE articulos SET id_usuario = '$idUsuario' WHERE id_articulo = '$idArticulo' AND estado = 1";
+  $resultado = mysqli_query($conexion, $sql);
+  if ($resultado) {
     $alert = '<div class="alert alert-success" role="alert">
-                Articulo seleccionado
+                Articulo seleccionado correctamente
                 </div>';
   } else {
     $alert = '<div class="alert alert-danger" role="alert">
@@ -50,7 +50,7 @@ if (!empty($_POST)) {
 
   <nav class="navbar navbar-light bg-light justify-content-between mb-3 borde-inferior">
     <div class="container">
-      <a href="detalle_articulo.php" class="navbar-brand">Ver seleccionados</a>
+      <a href="detalle_articulo.php" class="navbar-brand">Ver articulos seleccionados</a>
       <div>
         <a class="btn btn-primary btn-cerrar-sesion" href="logout.php">Cerrar sesión</a>
       </div>
@@ -59,7 +59,7 @@ if (!empty($_POST)) {
   </nav>
 
   <div class="container">
-    <p class="text-usuario">Hola <?php echo $_SESSION['nombre']; ?> Bienvenido. Puedes elejir el artículo que desees</p>
+    <p class="text-usuario">Hola <?php echo $_SESSION['nombre']; ?> Bienvenid@. Puedes seleccionar el artículo que desees</p>
   </div>
   <div class="container">
     <div class="card">
@@ -72,7 +72,7 @@ if (!empty($_POST)) {
         include('conexion.php');
 
         // Consulta para obtener los datos de la tabla
-        $sql = "SELECT * FROM articulos WHERE id_usuario = 3";
+        $sql = "SELECT * FROM articulos WHERE id_usuario = 3 AND estado = 1";
         $resultado = mysqli_query($conexion, $sql);
 
         if (mysqli_num_rows($resultado) > 0) {
@@ -86,9 +86,8 @@ if (!empty($_POST)) {
               <div class="col-sm-2 col-md-3 text-center">
                 <div class="articulos">
                   <input type="text" name="idArticulo" id="idArticulo" value="<?php echo ($fila["id_articulo"]) ?>" hidden>
-                  <img src="admin/<?php echo ($fila["imagen"]) ?>" class="img-fluid">
+                  <img src="./admin//imagenes/<?php echo ($fila["imagen"]) ?>" class="img-fluid">
                   <h5 class="card-title"><?php echo $fila["nombre"] ?></h5>
-                  <p class="card-text"><?php echo $fila["detalle"] ?></p>
                   <input type="submit" class="btn btn-primary" value="Agregar"></input>
                 </div>
               </div>
