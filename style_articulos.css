@@ -6,12 +6,11 @@ img{
 .articulos{
     display: inline-block;
     position: relative;
-    width: 230px;
+    width: 200px;
     height: auto;
     margin: 5px;
-    padding: 20px;
     border: 1px solid #c0bfbf;
-    border-radius: 5px ;
+    padding-bottom: 10px;
     background-color: #c4caff;
 }
 

@@ -92,24 +92,27 @@ if (isset($_REQUEST['id'])) {
                                     <?php
                                     while ($fila = mysqli_fetch_assoc($resultado)) {
                                     ?>
-                                        <div class="col-sm-3">
-                                            <div class="articulo-seleccionado">
-                                                <div class="div-iconos">
-                                                    <a title="Editar color" href="articulos_editar.php?id=<?php echo $fila["id_articulo"]; ?>">
+                                        <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3">
+                                            <div class="articulo-eliminado">
+                                                <div class="div-iconos-eliminados">
+                                                    <a title="Editar articulo" href="articulos_editar.php?id=<?php echo $fila["id_articulo"]; ?>">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
                                                             <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
                                                         </svg>
                                                     </a>
-                                                    <a title="Retirar color" href="articulos_eliminados.php?id=<?php echo $fila["id_articulo"]; ?>">
+                                                    <a title="Restaurar articulo" href="articulos_eliminados.php?id=<?php echo $fila["id_articulo"]; ?>">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-bootstrap-reboot icono-der-eliminados" viewBox="0 0 16 16">
                                                             <path d="M1.161 8a6.84 6.84 0 1 0 6.842-6.84.58.58 0 1 1 0-1.16 8 8 0 1 1-6.556 3.412l-.663-.577a.58.58 0 0 1 .227-.997l2.52-.69a.58.58 0 0 1 .728.633l-.332 2.592a.58.58 0 0 1-.956.364l-.643-.56A6.812 6.812 0 0 0 1.16 8z" />
                                                             <path d="M6.641 11.671V8.843h1.57l1.498 2.828h1.314L9.377 8.665c.897-.3 1.427-1.106 1.427-2.1 0-1.37-.943-2.246-2.456-2.246H5.5v7.352h1.141zm0-3.75V5.277h1.57c.881 0 1.416.499 1.416 1.32 0 .84-.504 1.324-1.386 1.324h-1.6z" />
                                                         </svg>
                                                     </a>
                                                 </div>
-                                                <img src="./imagenes/<?php echo $fila["imagen"]; ?>" class="img-fluid">
-                                                <h5 class="card-title"><?php echo $fila["nombre"]; ?></h5>
-                                                <a href="articulos_detalle.php?id=<?php echo $fila['id_articulo']; ?>">Ver mas ...</a>
+                                                <div class="text-center">
+                                                    <img src="./imagenes/<?php echo $fila["imagen"]; ?>" class="img-fluid">
+                                                    <h5 class="card-title text-center mt-2"><?php echo $fila["nombre"]; ?></h5>
+                                                    <a href="articulos_detalle.php?id=<?php echo $fila['id_articulo']; ?>">Ver mas ...</a>
+                                                </div>
+                                                
                                             </div>
                                         </div>
                                 <?php

@@ -1,7 +1,6 @@
 img{
     max-width: 200px;
-    max-height: 200px;
-    border-radius: 5px;
+    height: 245px;
     text-align: center;
 }
 
@@ -18,13 +17,11 @@ img{
     min-width: 220px;
     min-height: 280px;
     margin: 5px;
-    padding-top: 20px;
-    padding-right: 10px;
-    padding-left: 10px;
     padding-bottom: 10px;
     border: 1px solid #c0bfbf;
-    border-radius: 5px ;
     background-color: #e6e6e6;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
 }
 .articulo-seleccionado{
     display: inline-block;
@@ -35,45 +32,73 @@ img{
     min-width: 220px;
     min-height: 280px;
     margin: 5px;
-    padding-top: 20px;
-    padding-left: 10px;
-    padding-right: 10px;
     padding-bottom: 10px;
     border: 1px solid #c0bfbf;
-    border-radius: 5px ;
     background-color: #c4caff;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.articulo-eliminado{
+    display: inline-block;
+    position: relative;
+    width: auto;
+    height: auto;
+    max-width: 220px;
+    min-width: 220px;
+    min-height: 280px;
+    margin: 5px;
+    padding-bottom: 10px;
+    border: 1px solid #c0bfbf;
+    background-color: #c4caff;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
 }
 .tarjetas{
     display: flex;
     float: left;
 }
-
+.div-iconos-eliminados{
+    display: block;
+    position: relative;
+    height: 30px;
+    padding-left: 5px;
+    padding-right: 5px;
+    background: rgb(255, 255, 255);
+    padding-bottom: 5px;
+    border-radius: 5px;
+}
 .div-iconos{
     display: block;
     position: relative;
-    height: auto;
-    top:-10px;
-    
+    height: 30px;
+    padding-top: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    background: rgb(255, 255, 255);
+    padding-bottom: 5px;
+    border-radius: 5px;
+}
+.icono-izq{
+    position: relative;
+    float: left;
 }
 .icono-der{
-    display: block;
     position: relative;
     float: right;
     background-color: rgb(226, 51, 51);
     color: #FFFFFF;
     border-radius: 50%;
     padding: 2px;
-    top: 5px;
     border: 1px solid red;
 }
 
 .icono-der-eliminados{
     position: relative;
     float: right;
-    bottom: 0px;
     color: #FFFFFF;
     border-radius: 50%;
     padding: 3px;
+    top: 4px;
     background-color: rgb(15, 121, 29);
 }
 

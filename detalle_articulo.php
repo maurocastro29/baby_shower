@@ -86,7 +86,7 @@ if (!empty($_POST)) {
                   
                   <input type="text" name="idArticulo" id="idArticulo" value="<?php echo ($fila["id_articulo"]) ?>" hidden>
                   <img src="./admin/imagenes/<?php echo ($fila["imagen"]) ?>" class="img-fluid">
-                  <h5 class="card-title"><?php echo $fila["nombre"] ?></h5>
+                  <h5 class="card-title mt-3"><?php echo $fila["nombre"] ?></h5>
                   <p class="card-text"><?php echo $fila["detalle"] ?></p>
                   <input type="submit" class="btn btn-danger" value="Eliminar"></input>
                 </div>

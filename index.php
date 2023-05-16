@@ -3,7 +3,6 @@ session_start();
 if (empty($_SESSION['userBabyShowerActive'])) {
   header('location: login.php');
 }
-
 if (!empty($_POST)) {
   include('conexion.php');
   $idArticulo = $_POST['idArticulo'];
@@ -21,14 +20,12 @@ if (!empty($_POST)) {
   }
 }
 ?>
-
 <!DOCTYPE html>
 <html>
 
 <head>
   <title>Lista de Artículos</title>
   <!-- Agrega las bibliotecas de Bootstrap -->
-
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -38,15 +35,13 @@ if (!empty($_POST)) {
 </head>
 
 <body>
-  
+
   <div class="titulo text-center">
     <div>
       <h1 class="titulo-babyshower">BABY SHOWER</h1>
       <h3 style="font-family: cursive;" class="nombre-bebe">(Nombre bebé)</h3>
     </div>
-
   </div>
-
 
   <nav class="navbar navbar-light bg-light justify-content-between mb-3 borde-inferior">
     <div class="container">
@@ -79,7 +74,6 @@ if (!empty($_POST)) {
           // Muestra los datos de la tabla
           echo isset($alert) ? $alert : '';
           echo '<div class="row justify-content-center">';
-
           while ($fila = mysqli_fetch_assoc($resultado)) {
         ?>
             <form action="index.php" method="post">
@@ -87,23 +81,21 @@ if (!empty($_POST)) {
                 <div class="articulos">
                   <input type="text" name="idArticulo" id="idArticulo" value="<?php echo ($fila["id_articulo"]) ?>" hidden>
                   <img src="./admin//imagenes/<?php echo ($fila["imagen"]) ?>" class="img-fluid">
-                  <h5 class="card-title"><?php echo $fila["nombre"] ?></h5>
+                  <div style="padding-left: 5px; padding-right: 5px;">
+                    <h5 class="card-title mt-3"><?php echo $fila["nombre"] ?></h5>
+                    <p><?php echo $fila["detalle"] ?></p>
+                  </div>
                   <input type="submit" class="btn btn-primary" value="Agregar"></input>
                 </div>
               </div>
             </form>
-        <?php
-          }
-
-          echo '</div>';
-        } else {
-          echo '<div class="text-center">Todos los artículos han sido seleccionados</div>';
-        }
-
-        ?>
+          <?php } ?>
       </div>
+    <?php } else { ?>
+      <div class="text-center">Todos los artículos han sido seleccionados</div>
+    <?php } ?>
     </div>
-
+  </div>
   </div>
   <footer class="py-4 bg-light mt-auto">
     <div class="container-fluid px-4">
