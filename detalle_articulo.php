@@ -41,7 +41,7 @@ if (!empty($_POST)) {
   <div class="titulo text-center">
     <div>
       <h1 class="titulo-babyshower">BABY SHOWER</h1>
-      <h3 style="font-family: cursive;" class="nombre-bebe">(Nombre bebé)</h3>
+      <h3 style="font-family: cursive;" class="nombre-bebe">Jossua Zain</h3>
     </div>
 
   </div>
