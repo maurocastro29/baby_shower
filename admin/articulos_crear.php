@@ -21,7 +21,7 @@ if (isset($_POST['submit'])) {
     $tmp_archivo = $_FILES['imagen']['tmp_name'];
 
     // Ruta donde se guardará el archivo
-    $ruta_archivo = "imagenes/" . $nombre_archivo;
+    $ruta_archivo = $nombre_archivo;
 
     // Verificar si el archivo es una imagen válida
     $permitidos = array("image/jpg", "image/jpeg", "image/gif", "image/png");

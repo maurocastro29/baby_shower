@@ -48,7 +48,7 @@ if (!empty($_POST)) {
 
   <nav class="navbar navbar-light bg-light justify-content-between mb-3 borde-inferior">
     <div class="container">
-      <a href="index.php" class="navbar-brand">Ver lista de articulos</a>
+      <a href="index.php" class="navbar-brand"  style="color: #0069D9;"><b>Ver lista de articulos</b></a>
       <div>
         <a class="btn btn-primary btn-cerrar-sesion" href="logout.php">Cerrar sesión</a>
       </div>
@@ -56,6 +56,7 @@ if (!empty($_POST)) {
   </nav>
   <div class="container">
     <p class="text-usuario"><?php echo $_SESSION['nombre']; ?> estos son los articulo que has seleccionado...</p>
+    <span class="countdown" id="clock"></span>
   </div>
 
   <div class="container">
@@ -114,6 +115,7 @@ if (!empty($_POST)) {
       </div>
     </div>
   </footer>
+  <script src="countDown.js"></script>
 </body>
 
 </html>
