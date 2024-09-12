@@ -50,8 +50,9 @@ if (!empty($_POST)) {
 
         //INSERSION DE NUEVO USUARIO
         if ($resultUsuario < 1 && $passw == $confirmarPassword) {
-            $sql = "INSERT INTO usuarios (nombres, apellidos, usuario, password, id_tipo, id_estado) 
-                    VALUES('$nombres', '$apellidos', '$usuario', '$passw',  '$tipoUsuario', '$estado')";
+            $usuarioMaestro = $_SESSION['usuario_maestro'];
+            $sql = "INSERT INTO usuarios (nombres, apellidos, usuario, password, id_tipo, id_estado, id_maestro_usuario) 
+                    VALUES('$nombres', '$apellidos', '$usuario', '$passw',  '$tipoUsuario', '$estado', '$usuarioMaestro')";
             $result = mysqli_query($conexion, $sql);
             if (!$result) {
                 $alert = '<div class="alert alert-danger" role="alert">
@@ -125,13 +126,14 @@ if (!empty($_POST)) {
                                             <div class="col-sm-6 col-md-6 col-lg-4 mb-3">
                                                 <div class="form-floating">
                                                     <select class="form-select" for="selectTipoUsuario" name="selectTipoUsuario" id="selectTipoUsuario" placeholder="Tipo de usuario" required>
-                                                        <option value=""></option>
+                                                        <option value="">--- Seleccionar ---</option>
                                                         <?php
                                                         include_once('../conexion2.php');
-                                                        $sql = "SELECT id_tipo, tipo FROM tipo_usuarios";
+                                                        $sql = "SELECT id_tipo, tipo FROM tipo_usuarios WHERE tipo <> 'ROOT'";
                                                         $query = mysqli_query($conexion, $sql);
                                                         $result = mysqli_num_rows($query);
                                                         if ($result) {
+                                                            
                                                             while ($fila = mysqli_fetch_assoc($query)) {
                                                                 echo '<option value=' . $fila['id_tipo'] . '>' . $fila['tipo'] . '</option>';
                                                             }
@@ -171,7 +173,7 @@ if (!empty($_POST)) {
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-center small">
                         <div class="text-muted">
-                            Copyright &copy; <a target="_blank" href="https://www.linkedin.com/in/mauricio-castro-52b38b181/"> Mauricio Castro 2023</a></div>
+                            Copyright &copy; <a target="_blank" href="https://www.linkedin.com/in/mauricio-castro-52b38b181/"> Mauricio Castro 2024</a></div>
                         <!--    <div>
                             <a href="#">Privacy Policy</a>
                             &middot;

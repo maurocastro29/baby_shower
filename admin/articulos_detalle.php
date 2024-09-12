@@ -6,11 +6,11 @@ if (empty($_SESSION['userBabyShowerActive'])) {
 if ($_SESSION['id_tipo'] != 1) {
     header('location: ../');
 }
-
+$usuarioMaestro = $_SESSION['usuario_maestro'];
 if (empty($_POST)) {
     include('../conexion.php');
     $idArticulo = $_REQUEST['quitar'];
-    $sql = "UPDATE articulos SET id_usuario = 3 WHERE id_articulo = '$idArticulo'";
+    $sql = "UPDATE articulos SET id_usuario = 3 WHERE id_articulo = '$idArticulo' AND id_maestro_usuario = '$usuarioMaestro'";
     $result = mysqli_query($conexion, $sql);
     if ($result) {
         $alert = '<div class="alert alert-primary" role="alert">
@@ -71,7 +71,7 @@ if (empty($_POST)) {
 
                             // Consulta para obtener los datos de la tabla
                             $idArticulo = isset($_REQUEST['id']) ? $_REQUEST['id'] : $_REQUEST['quitar'];
-                            $sql = "SELECT a.*, u.* FROM articulos AS a INNER JOIN usuarios AS u ON u.id_usuario = a.id_usuario WHERE a.id_articulo = '$idArticulo'";
+                            $sql = "SELECT a.*, u.* FROM articulos AS a INNER JOIN usuarios AS u ON u.id_usuario = a.id_usuario WHERE a.id_articulo = '$idArticulo' AND a.id_maestro_usuario = '$usuarioMaestro'";
                             $resultado = mysqli_query($conexion, $sql);
 
                             if (mysqli_num_rows($resultado) > 0) {
@@ -128,7 +128,7 @@ if (empty($_POST)) {
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-center small">
                         <div class="text-muted">
-                            Copyright &copy; <a target="_blank" href="https://www.linkedin.com/in/mauricio-castro-52b38b181/"> Mauricio Castro 2023</a></div>
+                            Copyright &copy; <a target="_blank" href="https://www.linkedin.com/in/mauricio-castro-52b38b181/"> Mauricio Castro 2024</a></div>
                         <!--    <div>
                             <a href="#">Privacy Policy</a>
                             &middot;

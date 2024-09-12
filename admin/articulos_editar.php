@@ -6,7 +6,7 @@ if (empty($_SESSION['userBabyShowerActive'])) {
 if ($_SESSION['id_tipo'] != 1) {
     header('location: ../');
 }
-
+$usuarioMaestro = $_SESSION['usuario_maestro'];
 $editar = false;
 $alert = '';
 // Si el formulario ha sido enviado
@@ -23,7 +23,7 @@ if (!empty($_POST)) {
         $articulo = $_POST['articulo'];
         $detalle = $_POST['descripcion'];
         // Obtener el nombre de la imagen anterior desde la base de datos
-        $sql = "SELECT imagen FROM articulos WHERE id_articulo = '$idArticulo'";
+        $sql = "SELECT imagen FROM articulos WHERE id_articulo = '$idArticulo' AND id_maestro_usuario = '$usuarioMaestro'";
         $resultado = mysqli_query($conexion, $sql);
         $fila = mysqli_fetch_assoc($resultado);
         $imagenAnterior = $fila['imagen'];
@@ -42,7 +42,7 @@ if (!empty($_POST)) {
 
                 
                 
-                $sql = "UPDATE articulos SET nombre = '$articulo', detalle = '$detalle', imagen = '$ruta_archivo' WHERE id_articulo = '$idArticulo'";
+                $sql = "UPDATE articulos SET nombre = '$articulo', detalle = '$detalle', imagen = '$ruta_archivo' WHERE id_articulo = '$idArticulo' AND id_maestro_usuario = '$usuarioMaestro'";
                 $result = mysqli_query($conexion, $sql);
 
                 if ($result) {
@@ -67,7 +67,7 @@ if (!empty($_POST)) {
                         </div>';
             }
         }else{
-            $sql = "UPDATE articulos SET nombre = '$articulo', detalle = '$detalle' WHERE id_articulo = '$idArticulo'";
+            $sql = "UPDATE articulos SET nombre = '$articulo', detalle = '$detalle' WHERE id_articulo = '$idArticulo' AND id_maestro_usuario = '$usuarioMaestro'";
             $result = mysqli_query($conexion, $sql);
             if ($result) {
                 $alert = '<div class="alert alert-primary" role="alert">
@@ -139,7 +139,7 @@ if (empty($_REQUEST['id']) && $editar == false) {
                             if(!empty($_REQUEST['edit'])){
                                 $idArticulo = $_REQUEST['edit'];
                             }
-                            $sql = "SELECT a.*, u.* FROM articulos AS a INNER JOIN usuarios AS u ON u.id_usuario = a.id_usuario WHERE a.id_articulo = '$idArticulo'";
+                            $sql = "SELECT a.*, u.* FROM articulos AS a INNER JOIN usuarios AS u ON u.id_usuario = a.id_usuario WHERE a.id_articulo = '$idArticulo'  AND a.id_maestro_usuario = '$usuarioMaestro'";
                             $resultado = mysqli_query($conexion, $sql);
 
                             if (mysqli_num_rows($resultado) > 0) {
@@ -193,7 +193,7 @@ if (empty($_REQUEST['id']) && $editar == false) {
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-center small">
                         <div class="text-muted">
-                            Copyright &copy; <a target="_blank" href="https://www.linkedin.com/in/mauricio-castro-52b38b181/"> Mauricio Castro 2023</a></div>
+                            Copyright &copy; <a target="_blank" href="https://www.linkedin.com/in/mauricio-castro-52b38b181/"> Mauricio Castro 2024</a></div>
                         <!--    <div>
                             <a href="#">Privacy Policy</a>
                             &middot;

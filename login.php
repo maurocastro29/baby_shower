@@ -14,7 +14,7 @@ if (!empty($_SESSION['userBabyShowerActive'])) {
             require_once "conexion.php";
             $user = mysqli_real_escape_string($conexion, $_POST['inputUsuario']);
             $clave = md5(mysqli_real_escape_string($conexion, $_POST['inputPassword']));
-            $query = mysqli_query($conexion, "SELECT u.*, t.tipo AS tipo_user FROM usuarios As u INNER JOIN tipo_usuarios AS t ON t.id_tipo = u.id_tipo WHERE u.usuario = '$user' AND u.password = '$clave' AND u.id_estado = 1");
+            $query = mysqli_query($conexion, "SELECT u.*, t.tipo AS tipo_user, mu.id AS usuario_maestro FROM usuarios As u INNER JOIN tipo_usuarios AS t ON t.id_tipo = u.id_tipo INNER JOIN maestro_usuario AS mu ON mu.id = u.id_maestro_usuario WHERE u.usuario = '$user' AND u.password = '$clave' AND u.id_estado = 1 AND mu.activo = 1");
 
             $resultado = mysqli_num_rows($query);
             if ($resultado > 0) {
@@ -27,17 +27,21 @@ if (!empty($_SESSION['userBabyShowerActive'])) {
                 $_SESSION['usuario'] = $dato['usuario'];
                 $_SESSION['id_tipo'] = $dato['id_tipo'];
                 $_SESSION['tipo'] = $dato['tipo_user'];
+                $_SESSION['usuario_maestro'] = $dato['usuario_maestro'];
 
                 $fechaActual = date('d/m/Y H:i:s');
                 $isuser = $_SESSION['idUser'];
                 $sql_update = "UPDATE usuarios set ultimo_ingreso = '$fechaActual' WHERE id_usuario = '$isuser'";
 
-                if ($_SESSION['id_tipo'] == 1) {
+                if ($_SESSION['id_tipo'] == 1 || $_SESSION['id_tipo'] == 4) {
                     mysqli_query($conexion, $sql_update);
                     header('location: ./admin/index.php');
                 } else if ($_SESSION['id_tipo'] == 2) {
                     mysqli_query($conexion, $sql_update);
                     header('location: index.php');
+                }else if($_SESSION['id_tipo'] == 3){
+                    mysqli_query($conexion, $sql_update);
+                    header('location: ./admin/index.php');
                 }
             } else {
                 $alert = '<div class="alert alert-danger" role="alert">

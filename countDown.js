@@ -43,10 +43,9 @@ const countdown = (deadline, elem, finalMessage) => {
     }, 1000)
 };
 
-countdown('Aug 30 2024 16:58:30 GMT-0500', 'clock', 'Bienvenidos a mi babyshower');
+countdown('Dec 01 2024 16:30:00 GMT-0500', 'clock', 'Bienvenidos a mi babyshower');
 
 let inputP = document.getElementById('inputPassword');
-
 let verP = document.getElementById('verPassw');
 
 verP.addEventListener("click", function(){
@@ -58,10 +57,3 @@ verP.addEventListener("click", function(){
 });
 
 //Account Password: Z73uHHNqHoa0F
-
-/*
-MySQL DB Name: if0_37108021_babyshowerprueba
-MySQL User Name: 	if0_37108021
-MySQL Password: Z73uHHNqHoa0F
-MySQL Host Name: sql110.infinityfree.com
-*/

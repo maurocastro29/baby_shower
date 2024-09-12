@@ -92,4 +92,100 @@ img{
 .img-articulo {
     width: 100%; /* La imagen ocupa el 100% del ancho del contenedor */
     max-height: 280px; /* Inicialmente, la altura es 0 */
+    
+}.menu{
+    position: sticky;
+    top: 0px;
+    z-index: 3;
+}
+img{
+    width: 200px;
+    height: 200px;
+}
+
+.articulos{
+    display: inline-block;
+    position: relative;
+    width: 200px;
+    height: auto;
+    margin: 5px;
+    padding-bottom: 10px;
+}
+
+.articulos2{
+    display: inline-block;
+    position: relative;
+    width: 200px;
+    height: auto;
+    margin: 5px;
+    padding-bottom: 10px;
+}
+
+.barra-superior{
+    display: block;
+    background-color: #c0bfbf;
+    width: auto;
+    height: 65px;
+    margin-bottom: 15px;
+}
+
+.btn-cerrar-sesion{
+    display: inline-block;
+}
+
+.borde-inferior{
+    border-bottom: 1px solid #e9e7e7;
+}
+
+.borde-superior{
+    border-top: 1px solid #e9e7e7;
+}
+
+.titulo{
+    top: 0px;
+    padding: 25px 0 3px 0;
+    box-shadow: 0 5px 15px rgba(144, 159, 255, 0.3);
+}
+
+.titulo-babyshower{
+    color: #f2efef;
+    font-size:45px;
+    height: 70px;
+    color: #0069D9;
+}
+
+.mensaje-usuario{
+    background-color: #c4caff;
+    padding: 10px;
+}
+.nombre-bebe{
+    position: relative;
+    color: #0069D9;
+    bottom: 10px;
+}
+
+
+.countdown{
+    display: inline; 
+    font-family: cursive;
+    color: #0069D9;
+    font-size: 1.5rem;
+}
+
+.titulo-countdown{
+    background-color: #c4caff;
+}
+
+.inferior{
+    position: sticky;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    z-index: 3;
+}
+
+.img-articulo {
+    width: 100%; /* La imagen ocupa el 100% del ancho del contenedor */
+    max-height: 280px; /* Inicialmente, la altura es 0 */
+    
 }

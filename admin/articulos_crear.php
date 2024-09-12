@@ -8,7 +8,7 @@ if ($_SESSION['id_tipo'] != 1) {
 }
 
 include('../conexion.php');
-
+$usuarioMaestro = $_SESSION['usuario_maestro'];
 // Si el formulario ha sido enviado
 if (isset($_POST['submit'])) {
     $articulo = $_POST['articulo'];
@@ -28,7 +28,7 @@ if (isset($_POST['submit'])) {
     $tipo_imagen = mime_content_type($tmp_archivo);
     if (in_array($tipo_imagen, $permitidos) && $tamano_archivo < 1000000) {
         // Si el archivo es válido, guardar la información en la base de datos
-        $sql = "INSERT INTO articulos (nombre, detalle, imagen, estado, id_usuario) VALUES ('$articulo', '$detalle', '$ruta_archivo', 1, 3)";
+        $sql = "INSERT INTO articulos (nombre, detalle, imagen, estado, id_usuario, id_maestro_usuario) VALUES ('$articulo', '$detalle', '$ruta_archivo', 1, 3, '$usuarioMaestro')";
         $result = mysqli_query($conexion, $sql);
 
         if ($result) {
@@ -125,7 +125,7 @@ if (isset($_POST['submit'])) {
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-center small">
                         <div class="text-muted">
-                            Copyright &copy; <a target="_blank" href="https://www.linkedin.com/in/mauricio-castro-52b38b181/"> Mauricio Castro 2023</a></div>
+                            Copyright &copy; <a target="_blank" href="https://www.linkedin.com/in/mauricio-castro-52b38b181/"> Mauricio Castro 2024</a></div>
                         <!--    <div>
                             <a href="#">Privacy Policy</a>
                             &middot;

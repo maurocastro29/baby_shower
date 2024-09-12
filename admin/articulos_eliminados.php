@@ -6,14 +6,15 @@ if (empty($_SESSION['userBabyShowerActive'])) {
 if ($_SESSION['id_tipo'] != 1) {
     header('location: ../');
 }
+$usuarioMaestro = $_SESSION['usuario_maestro'];
 if (isset($_REQUEST['id'])) {
     // Conexión a la base de datos
     include('../conexion.php');
     $idArticulo = $_REQUEST['id'];
-    $sql = "SELECT id_articulo FROM articulos WHERE estado = 1 and id_articulo = '$idArticulo'";
+    $sql = "SELECT id_articulo FROM articulos WHERE estado = 1 and id_articulo = '$idArticulo' AND id_maestro_usuario = '$usuarioMaestro'";
     $result = mysqli_query($conexion, $sql);
     if ($result) {
-        $sql = "UPDATE articulos SET estado = 1 WHERE id_articulo = '$idArticulo'";
+        $sql = "UPDATE articulos SET estado = 1 WHERE id_articulo = '$idArticulo'  AND id_maestro_usuario = '$usuarioMaestro'";
         $result = mysqli_query($conexion, $sql);
         if ($result) {
             $alert = '<div class="alert alert-primary" role="alert">
@@ -80,9 +81,9 @@ if (isset($_REQUEST['id'])) {
                             <?php
                             // Conexión a la base de datos
                             include('../conexion.php');
-
+                            $usuarioMaestro = $_SESSION['usuario_maestro'];
                             // Consulta para obtener los datos de la tabla
-                            $sql = "SELECT * FROM articulos WHERE estado = 2";
+                            $sql = "SELECT * FROM articulos WHERE estado = 2 AND id_maestro_usuario = '$usuarioMaestro'";
                             $resultado = mysqli_query($conexion, $sql);
 
                             if (mysqli_num_rows($resultado) > 0) {
@@ -133,7 +134,7 @@ if (isset($_REQUEST['id'])) {
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-center small">
                         <div class="text-muted">
-                            Copyright &copy; <a target="_blank" href="https://www.linkedin.com/in/mauricio-castro-52b38b181/"> Mauricio Castro 2023</a>
+                            Copyright &copy; <a target="_blank" href="https://www.linkedin.com/in/mauricio-castro-52b38b181/"> Mauricio Castro 2024</a>
                         </div>
                         <!--    <div>
                             <a href="#">Privacy Policy</a>

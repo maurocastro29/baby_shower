@@ -20,6 +20,7 @@ if (!empty($_POST)) {
                 </div>';
   }
 }
+$usuarioMaestro = $_SESSION['usuario_maestro'];
 ?>
 
 <!DOCTYPE html>
@@ -68,7 +69,7 @@ if (!empty($_POST)) {
 
         // Consulta para obtener los datos de la tabla
         $idUser = $_SESSION['idUser'];
-        $sql = "SELECT * FROM articulos WHERE id_usuario = '$idUser' AND estado = 1";
+        $sql = "SELECT * FROM articulos WHERE id_usuario = '$idUser' AND estado = 1 AND id_maestro_usuario = '$usuarioMaestro'";
         $resultado = mysqli_query($conexion, $sql);
 
         if (mysqli_num_rows($resultado) > 0) {
@@ -100,7 +101,7 @@ if (!empty($_POST)) {
     <div class="container-fluid px-4">
       <div class="d-flex align-items-center justify-content-center">
         <div class="text-muted">
-          Copyright &copy; <a target="_blank" href="https://www.linkedin.com/in/mauricio-castro-52b38b181/"> <b>Mauricio Castro 2023</b></a>
+          Copyright &copy; <a target="_blank" href="https://www.linkedin.com/in/mauricio-castro-52b38b181/"> <b>Mauricio Castro 2024</b></a>
         </div>
       </div>
     </div>
