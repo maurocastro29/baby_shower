@@ -9,3 +9,8 @@
 .color-text-aux{
     color: #949292;
 }
+
+.posicion-aux{
+    position: relative; 
+    top: -2px;
+}

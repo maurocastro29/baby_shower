@@ -92,6 +92,7 @@ if ($_SESSION['id_tipo'] != 1) {
                                     $result = mysqli_num_rows($query);
                                     if ($result) {
                                         while ($fila = mysqli_fetch_assoc($query)) {
+                                            if($fila['id_usuario'] != 3){
                                     ?>
                                             <tr>
                                                 <td><?php echo $fila['nombres'] ?></td>
@@ -103,11 +104,27 @@ if ($_SESSION['id_tipo'] != 1) {
                                                 <td>
                                                     <a href="usuarios_editar.php?id=<?php echo $fila['id_usuario']; ?>" class="btn btn-success"><i class='fas fa-edit'></i></a>
                                                     <form action="usuarios_eliminar.php?id=<?php echo $fila['id_usuario']; ?>" method="post" class="confirmar d-inline">
-                                                        <button class="btn btn-danger" type="submit"><i class='fas fa-trash-alt'></i> </button>
+                                                        <button class="btn btn-danger" type="submit"><i class='fas faa-trash-alt'></i> </button>
                                                     </form>
                                                 </td>
                                             </tr>
                                     <?php
+                                            }else if($fila['id_usuario'] == 3 && $fila["id_usuario"] == $_SESSION['idUser']){
+                                                echo '<tr>'.
+                                                        '<td>'.$fila['nombres'].'</td>'.
+                                                        '<td>'.$fila['apellidos'].'</td>'.
+                                                        '<td>'.$fila['usuario'].'</td>'.
+                                                        '<td>'.$fila['tipo'].'</td>'.
+                                                        '<td>'.$fila['estado'].'</td>'.
+                                                        '<td>'.$fila['ultimo_ingreso'].'</td>'.
+                                                        '<td>'.
+                                                            '<a href="usuarios_editar.php?id='.$fila['id_usuario'].'" class="btn btn-success"><i class="fas fa-edit"></i></a>'.
+                                                            '<form action="usuarios_eliminar.php?id='.$fila['id_usuario'].'" method="post" class="confirmar d-inline">'.
+                                                                '<button class="btn btn-danger" type="submit"><i class="fas fa-trash-alt"></i> </button>'.
+                                                            '</form>'.
+                                                        '</td>'.
+                                                    '</tr>';
+                                            }
                                         }
                                     }
                                     ?>

@@ -19,22 +19,19 @@ img{
     margin: 5px;
     padding-bottom: 10px;
     border: 1px solid #c0bfbf;
-    background-color: #e6e6e6;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 }
 .articulo-seleccionado{
     display: inline-block;
     position: relative;
-    width: auto;
+    width: 200px;
     height: auto;
     max-width: 220px;
     min-width: 220px;
-    min-height: 280px;
     margin: 5px;
     padding-bottom: 10px;
     border: 1px solid #c0bfbf;
-    background-color: #c4caff;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 }
@@ -49,7 +46,6 @@ img{
     margin: 5px;
     padding-bottom: 10px;
     border: 1px solid #c0bfbf;
-    background-color: #c4caff;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 }
@@ -65,7 +61,8 @@ img{
     padding-right: 5px;
     background: rgb(255, 255, 255);
     padding-bottom: 5px;
-    border-radius: 5px;
+    border-radius: 5px 5px 0 0;
+    background-color: #e6e6e6;
 }
 .div-iconos{
     display: block;
@@ -76,7 +73,8 @@ img{
     padding-right: 5px;
     background: rgb(255, 255, 255);
     padding-bottom: 5px;
-    border-radius: 5px;
+    border-radius: 5px 5px 0 0;
+    background-color: #e6e6e6;
 }
 .icono-izq{
     position: relative;
@@ -104,7 +102,7 @@ img{
 
 .img-editar{
     position: relative;
-    top: 25px;
+    top: 5px;
     width: 250px;
     height: 250px;
 }
@@ -114,4 +112,14 @@ img{
     font-family: cursive;
     color: #0069D9;
     font-size: 1.5rem;
+}
+
+.img-articulo {
+    width: 100%; /* La imagen ocupa el 100% del ancho del contenedor */
+    max-height: 280px; /* Inicialmente, la altura es 0 */
+}
+
+.img-seleccionado{
+    border: 1px solid #00d945;
+    box-shadow: 0px 1px 10px 3px #00d945;
 }

@@ -33,6 +33,7 @@ if (isset($_POST['submit'])) {
 
         if ($result) {
             // Mover el archivo cargado a la ruta especificada
+            $ruta_archivo = "./imagenes/" . $nombre_archivo;
             move_uploaded_file($tmp_archivo, $ruta_archivo);
             $alert = '<div class="alert alert-primary" role="alert">
                     Articulo creado exitosamente
@@ -43,7 +44,9 @@ if (isset($_POST['submit'])) {
             </div>';
         }
     } else {
-        echo "El archivo seleccionado no es una imagen válida o es demasiado grande.";
+        $alert = '<div class="alert alert-danger" role="alert">
+                    El archivo seleccionado no es una imagen válida o es demasiado grande.
+                </div>';
     }
 }
 ?>

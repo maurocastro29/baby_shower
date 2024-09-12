@@ -89,6 +89,7 @@ if (!empty($_SESSION['userBabyShowerActive'])) {
                                         </div>
                                         <div class=" mb-4">
                                             <input class="form-control" id="inputPassword" name="inputPassword" type="password" placeholder="Ingrese su contraseña" />
+                                            <input type="checkbox" id="verPassw" class="mt-3"> <span class="small color-text-aux posicion-aux" >Ver contraseña</span> 
                                         </div>
                                         <div class="d-flex align-items-center justify-content-center mt-4 mb-0">
                                             <input class="btn btn-primary pe-5 ps-5" type="submit" value="ingresar">
@@ -108,6 +109,7 @@ if (!empty($_SESSION['userBabyShowerActive'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="../admin/js/scripts.js"></script>
     <script src="../admin/js/usuarios.js"></script>
+    <script src="countDown.js"></script>
 </body>
 
 </html>

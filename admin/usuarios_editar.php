@@ -183,7 +183,7 @@ if ($result_sql == 0) {
                                         <!--FIN-->
                                         <div class="d-flex align-items-center justify-content-center mt-4 mb-0 btn-reservar">
                                             <button type="submit" class="btn btn-success text-white pb-2 pt-2 pr-2 mx-2">Confirmar</button>
-                                            <a href="usuarios.php" class="btn btn-danger">Atras</a>
+                                            <a href="usuarios.php" class="btn btn-danger">Cancelar</a>
                                         </div>
                                     </form>
                                 </div>

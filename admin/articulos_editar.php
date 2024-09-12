@@ -7,9 +7,11 @@ if ($_SESSION['id_tipo'] != 1) {
     header('location: ../');
 }
 
-
+$editar = false;
+$alert = '';
 // Si el formulario ha sido enviado
 if (!empty($_POST)) {
+    $editar=true;
     $alert = '';
     if (empty($_POST['articulo']) || empty($_POST['descripcion'])) {
         $alert = '<div class="alert alert-danger" role="alert">
@@ -20,25 +22,69 @@ if (!empty($_POST)) {
         $idArticulo = $_REQUEST['edit'];
         $articulo = $_POST['articulo'];
         $detalle = $_POST['descripcion'];
-        $sql = "UPDATE articulos SET nombre = '$articulo', detalle = '$detalle' WHERE id_articulo = '$idArticulo'";
-        $result = mysqli_query($conexion, $sql);
-        if ($result) {
-            $alert = '<div class="alert alert-primary" role="alert">
-                       Articulo editado exitosamente
+        // Obtener el nombre de la imagen anterior desde la base de datos
+        $sql = "SELECT imagen FROM articulos WHERE id_articulo = '$idArticulo'";
+        $resultado = mysqli_query($conexion, $sql);
+        $fila = mysqli_fetch_assoc($resultado);
+        $imagenAnterior = $fila['imagen'];
+
+        if(!empty( $_FILES['imagenNueva'])){
+            $nombre_archivo = $_FILES['imagenNueva']['name'];
+            $tipo_archivo = $_FILES['imagenNueva']['type'];
+            $tamano_archivo = $_FILES['imagenNueva']['size'];
+            $tmp_archivo = $_FILES['imagenNueva']['tmp_name'];
+
+            $ruta_archivo = $nombre_archivo;
+            // Verificar si el archivo es una imagen válida
+            $permitidos = array("image/jpg", "image/jpeg", "image/gif", "image/png");
+            $tipo_imagen = mime_content_type($tmp_archivo);
+            if (in_array($tipo_imagen, $permitidos) && $tamano_archivo < 1000000) {
+
+                
+                
+                $sql = "UPDATE articulos SET nombre = '$articulo', detalle = '$detalle', imagen = '$ruta_archivo' WHERE id_articulo = '$idArticulo'";
+                $result = mysqli_query($conexion, $sql);
+
+                if ($result) {
+                    // Mover el archivo cargado a la ruta especificada
+                    $ruta_archivo = "./imagenes/" . $nombre_archivo;
+                    move_uploaded_file($tmp_archivo, $ruta_archivo);
+                    // Eliminar la imagen anterior del directorio si existe
+                    if (!empty($imagenAnterior) && file_exists("./imagenes/" . $imagenAnterior)) {
+                        unlink("./imagenes/" . $imagenAnterior);
+                    }
+                    $alert = '<div class="alert alert-primary" role="alert">
+                            Articulo editado exitosamente
+                        </div>';
+                } else {
+                    $alert = '<div class="alert alert-danger" role="alert">
+                        Error al editar articulo
                     </div>';
-        } else {
-            $alert = '<div class="alert alert-danger" role="alert">
-                    Error al editar articulo
-                </div>';
+                }
+            }else{
+                $alert = '<div class="alert alert-danger" role="alert">
+                            El archivo seleccionado no es una imagen válida o es demasiado grande.
+                        </div>';
+            }
+        }else{
+            $sql = "UPDATE articulos SET nombre = '$articulo', detalle = '$detalle' WHERE id_articulo = '$idArticulo'";
+            $result = mysqli_query($conexion, $sql);
+            if ($result) {
+                $alert = '<div class="alert alert-primary" role="alert">
+                        Articulo editado exitosamente
+                        </div>';
+            } else {
+                $alert = '<div class="alert alert-danger" role="alert">
+                        Error al editar articulo
+                    </div>';
+            }
         }
+        
     }
 }
-
-if (empty($_REQUEST['id'])) {
+if (empty($_REQUEST['id']) && $editar == false) {
     header('location: articulos.php');
 }
-
-
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -83,11 +129,16 @@ if (empty($_REQUEST['id'])) {
                         <div class="card-body">
                             <?php
                             // Conexión a la base de datos
-
+                            echo $alert;
                             include('../conexion.php');
 
                             // Consulta para obtener los datos de la tabla
-                            $idArticulo = $_REQUEST['id'];
+                            if(!empty($_REQUEST['id'])){
+                                $idArticulo = $_REQUEST['id'];
+                            }
+                            if(!empty($_REQUEST['edit'])){
+                                $idArticulo = $_REQUEST['edit'];
+                            }
                             $sql = "SELECT a.*, u.* FROM articulos AS a INNER JOIN usuarios AS u ON u.id_usuario = a.id_usuario WHERE a.id_articulo = '$idArticulo'";
                             $resultado = mysqli_query($conexion, $sql);
 
@@ -99,22 +150,26 @@ if (empty($_REQUEST['id'])) {
                                     $fila = mysqli_fetch_assoc($resultado)
                                     ?>
                                     <div class="col-sm-4 text-center">
-                                        <img src="imagenes/<?php echo $fila["imagen"]; ?>" class="img-fluid img-editar">
+                                        <img src="imagenes/<?php echo $fila["imagen"]; ?>" class="img-fluid img-editar rounded border">
                                     </div>
                                     <div class="col-sm-6">
-                                        <form action="articulos_editar.php?edit=<?php  echo $fila["id_articulo"]; ?>" method="post">
+                                        <form action="articulos_editar.php?edit=<?php  echo $fila["id_articulo"]; ?>" method="post"  enctype="multipart/form-data">
                                             <div class="col-sm-12">
-                                                <label for="articulo"><b> Nombre del artículo</b></label>
-                                                <div class="form-floating">
-                                                    <input value="<?php echo $fila["nombre"]; ?>" class="form-control" name="articulo" id="articulo" type="text" placeholder="Ingrese el nombre del articulo" required />
+                                                <div class=" mb-3 mb-md-0">
+                                                    <label for="imagenNueva"><b>Nueva foto</b></label>
+                                                    <input class="form-control" name="imagenNueva" id="imagenNueva" type="file" placeholder="Foto del articulo"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <label for="articulo"><b>Nombre del artículo</b></label>
+                                                <div class="">
+                                                    <input type="text" value="<?php echo htmlspecialchars(trim($fila["nombre"]));?>" class="form-control" name="articulo" id="articulo" placeholder="Ingrese el nombre del articulo" required/>
                                                 </div>
                                             </div>
                                             <div class="col-sm-12">
                                                 <label for="articulo"><b>Descripción</b></label>
                                                 <div class="">
-                                                    <textarea rows="3" col="10" class="form-control" name="descripcion" id="descripcion" type="text" placeholder="Ingrese la descripción del articulo" required>
-                                                    <?php echo $fila["detalle"]; ?>    
-                                                </textarea>
+                                                    <textarea rows="4" col="10" class="form-control" name="descripcion" id="descripcion" type="text" placeholder="Ingrese la descripción del articulo" required><?php echo $fila["detalle"]; ?></textarea>
                                                 </div>
                                             </div>
                                             <button class="btn btn-success mt-3">Enviar</button>
