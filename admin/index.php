@@ -1,30 +1,27 @@
 <?php
     session_start();
     if (empty($_SESSION['userBabyShowerActive'])) {
-        header('location: ../login.php');
+        header('location: ../home.php');
     }
     if ($_SESSION['id_tipo'] != 1) {
         header('location: ../');
     }
     $usuario_maestro = $_SESSION['usuario_maestro'];
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Dashboard - SA Admin</title>
+    <title>Dashboard - BS Admin</title>
     <link href="../admin/css/styles.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
     <link href="../admin/css/styles.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
 </head>
-
 <body class="sb-nav-fixed">
     <?php include('menus/menu_superior.php'); ?>
     <div id="layoutSidenav">
@@ -77,10 +74,25 @@
                                 <div class="card-footer d-flex align-items-center justify-content-between">
                                     <?php
                                         include('../conexion.php');
-                                        $sql = "SELECT count(*) AS articulos_elegidos FROM articulos WHERE id_usuario <> 3 AND id_maestro_usuario = '".$usuario_maestro."'";
+                                        $sql = "SELECT COUNT(DISTINCT a.id_articulo) AS total_cantidad FROM articulos a INNER JOIN articulos_elegidos ae ON ae.id_articulo = a.id_articulo WHERE a.id_maestro_usuario = '".$usuario_maestro."'";
                                         $result = mysqli_query($conexion, $sql);
                                         if($dato = mysqli_fetch_array($result)){
-                                            echo '<spam>Total: '.$dato['articulos_elegidos'].'</spam>';
+                                            echo '<spam>Total: '.$dato['total_cantidad'].'</spam>';
+                                        }
+                                    ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card bg-success text-white mb-4">
+                                <div class="card-body">Total artículos esperados</div>
+                                <div class="card-footer d-flex align-items-center justify-content-between">
+                                    <?php
+                                        include('../conexion.php');
+                                        $sql = "SELECT COUNT(a.id_articulo) AS total_cantidad FROM articulos a INNER JOIN articulos_elegidos ae ON ae.id_articulo = a.id_articulo WHERE a.id_maestro_usuario = '".$usuario_maestro."'";
+                                        $result = mysqli_query($conexion, $sql);
+                                        if($dato = mysqli_fetch_array($result)){
+                                            echo '<spam>Total: '.$dato['total_cantidad'].'</spam>';
                                         }
                                     ?>
                                 </div>
@@ -92,17 +104,17 @@
                                 <div class="card-footer d-flex align-items-center justify-content-between">
                                 <?php
                                         include('../conexion.php');
-                                        $sql = "SELECT count(*) AS articulos_elegidos FROM articulos WHERE id_usuario = 3 AND id_maestro_usuario = '".$usuario_maestro."'";
+                                        $sql = "SELECT COUNT(DISTINCT a.id_articulo) AS total_cantidad FROM articulos a LEFT JOIN articulos_elegidos ae ON ae.id_articulo = a.id_articulo WHERE a.id_maestro_usuario ='".$usuario_maestro."'  AND ae.id_articulo IS NULL";
                                         $result = mysqli_query($conexion, $sql);
                                         if($dato = mysqli_fetch_array($result)){
-                                            echo '<spam>Total: '.$dato['articulos_elegidos'].'</spam>';
+                                            echo '<spam>Total: '.$dato['total_cantidad'].'</spam>';
                                         }
                                     ?>
                                 </div>
                             </div>
                         </div>
-                        <!--
-                        <div class="col-xl-3 col-md-6">
+                        
+                        <!--div class="col-xl-3 col-md-6">
                             <div class="card bg-danger text-white mb-4">
                                 <div class="card-body">Danger Card</div>
                                 <div class="card-footer d-flex align-items-center justify-content-between">
@@ -110,10 +122,10 @@
                                     <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                                 </div>
                             </div>
-                        </div>-->
+                        </div-->
                     </div>
                 </div>
-            <!--    <div class="row">
+                <!--div class="row">
                         <div class="col-xl-6">
                             <div class="card mb-4">
                                 <div class="card-header">
@@ -621,7 +633,7 @@
                             </table>
                         </div>
                     </div>
-                </div>-->
+                </div-->
             </main>
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid px-4">

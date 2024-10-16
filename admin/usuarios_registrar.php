@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (empty($_SESSION['userBabyShowerActive'])) {
-    header('location: ../login.php');
+    header('location: ../home.php');
 }
 if ($_SESSION['id_tipo'] != 1) {
     header('location: ../');
@@ -23,12 +23,12 @@ if (!empty($_POST)) {
             </div>';
     } else {
         /**CAPTURA DE DATOS DEL USUARIO */
-        $nombres = $_POST['inputFirstName'];
-        $apellidos = $_POST['inputFirstApellido'];
-        $usuario = $_POST['inputUsuario'];
-        $tipoUsuario = $_POST['selectTipoUsuario'];
-        $passw = md5($_POST['inputPassword']);
-        $confirmarPassword = md5($_POST['inputPasswordConfirm']);
+        $nombres = trim($_POST['inputFirstName']);
+        $apellidos = trim($_POST['inputFirstApellido']);
+        $usuario = trim($_POST['inputUsuario']);
+        $tipoUsuario = trim($_POST['selectTipoUsuario']);
+        $passw = trim($_POST['inputPassword']);
+        $confirmarPassword = trim($_POST['inputPasswordConfirm']);
         $resultEstado = mysqli_fetch_assoc(mysqli_query($conexion, "SELECT id_estado FROM estados where estado = 'ACTIVO'"));
         $estado =    $resultEstado['id_estado'];
 
@@ -51,8 +51,9 @@ if (!empty($_POST)) {
         //INSERSION DE NUEVO USUARIO
         if ($resultUsuario < 1 && $passw == $confirmarPassword) {
             $usuarioMaestro = $_SESSION['usuario_maestro'];
+            $newPpassw = password_hash($passw, PASSWORD_BCRYPT, ['cost' => 12]);
             $sql = "INSERT INTO usuarios (nombres, apellidos, usuario, password, id_tipo, id_estado, id_maestro_usuario) 
-                    VALUES('$nombres', '$apellidos', '$usuario', '$passw',  '$tipoUsuario', '$estado', '$usuarioMaestro')";
+                    VALUES('$nombres', '$apellidos', '$usuario', '$newPpassw',  '$tipoUsuario', '$estado', '$usuarioMaestro')";
             $result = mysqli_query($conexion, $sql);
             if (!$result) {
                 $alert = '<div class="alert alert-danger" role="alert">
@@ -76,7 +77,7 @@ if (!empty($_POST)) {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Registrar usuarios - SA Admin</title>
+    <title>Registrar usuarios - BS Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
     <link href="../admin/css/styles.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/estilos.css">

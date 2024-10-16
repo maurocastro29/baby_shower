@@ -1,23 +1,81 @@
 <?php
 session_start();
 if (empty($_SESSION['userBabyShowerActive'])) {
-  header('location: login.php');
+  header('location: home.php');
 }
 if (!empty($_POST)) {
   include('conexion.php');
   $idArticulo = $_POST['idArticulo'];
   $idUsuario = $_SESSION['idUser'];
-  $sql = "UPDATE articulos SET id_usuario = '$idUsuario' WHERE id_articulo = '$idArticulo' AND estado = 1";
-  $resultado = mysqli_query($conexion, $sql);
-  if ($resultado) {
-    $alert = '<div class="alert alert-success" role="alert">
-                Articulo seleccionado correctamente
-                </div>';
-  } else {
-    $alert = '<div class="alert alert-danger" role="alert">
-                Error al seleccionar articulo
-                </div>';
-  }
+
+  $sqlValidar = "SELECT count(*) AS total FROM articulos_elegidos WHERE id_articulo = '$idArticulo'";
+  $result = mysqli_query($conexion, $sqlValidar);
+  if ($result) {
+    $row = mysqli_fetch_assoc($result);
+    if ($row['total'] == 0) {
+      $sqlInsertar = "INSERT INTO articulos_elegidos (id_articulo, id_usuario) values (?, ?)";
+      $stmt = $conexion->prepare($sqlInsertar);
+      $stmt->bind_param('ss', $idArticulo, $idUsuario);
+      if ($stmt->execute()){
+        $sqlactualizar = "UPDATE articulos SET cantidad = 1 WHERE id_articulo = '$idArticulo' AND estado = 1";
+        $resultado = mysqli_query($conexion, $sqlactualizar);
+        if ($resultado) {
+          $alert = '<div class="alert alert-success" role="alert">
+                      Articulo seleccionado correctamente
+                      </div>';
+        } else {
+          $alert = '<div class="alert alert-danger" role="alert">
+                      Error al seleccionar articulo
+                      </div>';
+        }
+      } else {
+        $alert = '<div class="alert alert-danger" role="alert">
+                      Error al seleccionar articulo
+                      </div>';
+      }
+    } else {
+      $sqlConsultarCantidad = "SELECT cantidad, total FROM articulos WHERE id_articulo = '$idArticulo'";
+      $result = mysqli_query($conexion, $sqlConsultarCantidad);
+      if ($result){
+        $row = mysqli_fetch_assoc($result);
+        if ($row['cantidad'] < $row['total']){
+          $sqlInsertar = "INSERT INTO articulos_elegidos (id_articulo, id_usuario) values (?, ?)";
+          $stmt = $conexion->prepare($sqlInsertar);
+          $stmt->bind_param('ss', $idArticulo, $idUsuario);
+          if ($stmt->execute()){
+            // Contar cuántas veces se ha elegido el artículo
+            $sqlContarElegidos = "SELECT COUNT(*) AS total FROM articulos_elegidos WHERE id_articulo = '$idArticulo'";
+            $resultContar = mysqli_query($conexion, $sqlContarElegidos);
+            $rowContar = mysqli_fetch_assoc($resultContar);
+            $nuevoValor = $rowContar['total']; // Este es el nuevo valor que se asignará a la cantidad
+
+
+            $sqlactualizar = "UPDATE articulos SET cantidad = $nuevoValor WHERE id_articulo = '$idArticulo' AND estado = 1";
+            $resultado = mysqli_query($conexion, $sqlactualizar);
+            if ($resultado) {
+              $alert = '<div class="alert alert-success" role="alert">
+                          Articulo seleccionado correctamente
+                          </div>';
+            } else {
+              $alert = '<div class="alert alert-danger" role="alert">
+                          Error al seleccionar articulo
+                          </div>';
+            }
+          } else {
+            $alert = '<div class="alert alert-danger" role="alert">
+                          Error al seleccionar articulo
+                          </div>';
+          }
+        } else {
+          $alert = '<div class="alert alert-danger" role="alert">
+                      El articulo ya alcanzo su maximo permitido para elegir
+                      </div>';
+        }
+      }
+    }
+}
+
+
 }
 $usuarioMaestro = $_SESSION['usuario_maestro'];
 ?>
@@ -65,7 +123,7 @@ $usuarioMaestro = $_SESSION['usuario_maestro'];
           include('conexion.php');
 
           // Consulta para obtener los datos de la tabla
-          $sql = "SELECT id_articulo, nombre, detalle, imagen, estado, id_usuario FROM articulos WHERE estado = 1 AND id_maestro_usuario = '$usuarioMaestro'";
+          $sql = "SELECT id_articulo, nombre, detalle, cantidad, total, imagen, estado, id_usuario FROM articulos WHERE estado = 1 AND id_maestro_usuario = '$usuarioMaestro'";
           $resultado = mysqli_query($conexion, $sql);
 
           if (mysqli_num_rows($resultado) > 0) {
@@ -73,7 +131,7 @@ $usuarioMaestro = $_SESSION['usuario_maestro'];
             echo isset($alert) ? $alert : '';
             echo '<div class="row justify-content-center">';
             while ($fila = mysqli_fetch_assoc($resultado)) {
-              if($fila["id_usuario"] == 3 && $fila["id_usuario"] != $_SESSION['idUser']){
+              if($fila["id_usuario"] == 3 && $fila["id_usuario"] != $_SESSION['idUser'] && $fila["cantidad"] < $fila["total"]){
                 echo  '<form class="shadow m-2 border rounded" action="index.php" method="post">'.
                           '<div class="col-sm-2 col-md-3 text-center">'.
                             '<div class="articulos">'.
@@ -83,6 +141,7 @@ $usuarioMaestro = $_SESSION['usuario_maestro'];
                                 '<h5 class="card-title mt-3">'.$fila["nombre"].'</h5>'.
                                 '<p>'.$fila["detalle"].'</p>'.
                               '</div>'.
+                              '<div>'.$fila["cantidad"].'/'.$fila["total"].'</div></br>'.
                               '<input type="submit" class="btn btn-primary" value="Agregar"></input>'.
                             '</div>'.
                           '</div>'.
@@ -97,6 +156,7 @@ $usuarioMaestro = $_SESSION['usuario_maestro'];
                                 '<h5 class="card-title mt-3">'.$fila["nombre"].'</h5>'.
                                 '<p>'.$fila["detalle"].'</p>'.
                               '</div>'.
+                              '<div>'.$fila["cantidad"].'/'.$fila["total"].'</div></br>'.
                               '<input type="button" class="btn btn-warning" value="Mi articulo"></input>'.
                             '</div>'.
                           '</div>'.
@@ -111,7 +171,8 @@ $usuarioMaestro = $_SESSION['usuario_maestro'];
                                 '<h5 class="card-title mt-3">'.$fila["nombre"].'</h5>'.
                                 '<p>'.$fila["detalle"].'</p>'.
                               '</div>'.
-                              '<input type="button" class="btn btn-danger" value="Articulo elegido"></input>'.
+                              '<div>'.$fila["cantidad"].'/'.$fila["total"].'</div></br>'.
+                              '<input type="button" class="btn btn-danger" value="Articulo agotado"></input>'.
                             '</div>'.
                           '</div>'.
                         '</form>';

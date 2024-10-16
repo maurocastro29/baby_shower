@@ -4,11 +4,11 @@
     if (empty($_SESSION['userBabyShowerActive'])) {
         session_destroy();
         restaurarValoresSesion();
-        header('location: ../login.php');
+        header('location: ../home.php');
     }else{
         session_destroy();
         restaurarValoresSesion();
-        header('location: ../login.php');
+        header('location: ../home.php');
     }
 
     function restaurarValoresSesion(){

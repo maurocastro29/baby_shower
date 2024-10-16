@@ -35,7 +35,7 @@ if (isset($_POST['primerNombre'])) {
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Datos personales</title>
+  <title>Registrar datos personales</title>
   <!-- Agrega las bibliotecas de Bootstrap -->
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -46,81 +46,25 @@ if (isset($_POST['primerNombre'])) {
   <link rel="stylesheet" href="style.css">
 </head>
 
-<body class="bg-light ">
-
-<!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-light bg-primary shadow fixed-top">
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <a class="navbar-brand text-white" href="home.php">My Babyshower</a>
-
-  <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-      
-      <li class="nav-item">
-        <a class="nav-link text-white" href="quienes-somos.php">Quienes somos</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-white" href="contactanos.php">Contáctanos</a>
-      </li>
-    </ul>
-    <div class="form-inline my-2 my-lg-0">
-        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            <li class="nav-item active">
-                <!-- Botón para abrir el modal de inicio de sesión -->
-                <a class="nav-link text-white" href="#" data-toggle="modal" data-target="#loginModal">Iniciar sesión</a>
-            </li>
-            <li class="nav-item border border-white">
-                <a class="nav-link mx-2 text-white" href="registrar-datos-personal.php">Registrarse</a>
-            </li>
-        </ul>
-    </div>
-  </div>
-</nav>
-
-<!-- Modal de inicio de sesión -->
-<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="loginModalLabel">Iniciar Sesión</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form action="login.php" method="post">
-          <div class="form-group">
-            <label for="inputUsuario">Usuario</label>
-            <input type="text" class="form-control" id="inputUsuario" name="inputUsuario" required>
-          </div>
-          <div class="form-group">
-            <label for="inputPassword">Contraseña:</label>
-            <input type="password" class="form-control" id="inputPassword" name="inputPassword" required>
-          </div>
-          <button type="submit" class="btn btn-primary">Iniciar sesión</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
+<body class="bg-light">
 
 <!-- Page Content -->
-<section class="py-5 mt-5">
+<section class="py-5">
   <div class="container">
     <h2 class="fw-light text-center pb-3">Registro de usuario</h2>
     <div class="container mt-2">
         <div class="row justify-content-center">
-            <div class="col-md-8 rounded border border-primary bg-white shadow p-3">
+            <div class="col-md-8 rounded border bg-white shadow p-3">
             <h5 class="text-center mt-1 mb-5 text-primary"><b>Registro de datos personales</b></h5>
             <?php 
                 if(!empty($message)){
                     echo '<div class="bg-warning border rounded mb-2"><p class="mx-2 my-1">'.$message.'</p></div>';
                 }
             ?>
-            <form method="POST">
+            <form method="post" id="formRegistro">
                 <p class="text-secondary text-samll">Ingrese los siguientes datos</p>
+                <!-- Agrega un contenedor para los mensajes de error -->
+                <div id="errores" class="alert alert-danger" style="display: none;"></div>
                 <div class="form-row">
                     
                     <div class="form-group col-md-6">
@@ -153,6 +97,7 @@ if (isset($_POST['primerNombre'])) {
                     </div>
                 </div>
                 <div class="d-flex justify-content-center">
+                    <a class="nav-link mx-2 text-danger" href="home.php">Cancelar</a>
                     <input class="btn btn-primary pe-5 ps-5" type="submit" value="Siguiente">
                 </div>
             </form>
@@ -161,6 +106,6 @@ if (isset($_POST['primerNombre'])) {
         </div>
   </div>
 </section>
-
+<script src="js/registrarDatosPersonal.js"></script>
 </body>
 </html>

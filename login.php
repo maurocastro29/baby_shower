@@ -13,36 +13,50 @@ if (!empty($_SESSION['userBabyShowerActive'])) {
         } else {
             require_once "conexion.php";
             $user = mysqli_real_escape_string($conexion, $_POST['inputUsuario']);
-            $clave = md5(mysqli_real_escape_string($conexion, $_POST['inputPassword']));
-            $query = mysqli_query($conexion, "SELECT u.*, t.tipo AS tipo_user, mu.id AS usuario_maestro FROM usuarios As u INNER JOIN tipo_usuarios AS t ON t.id_tipo = u.id_tipo INNER JOIN maestro_usuario AS mu ON mu.id = u.id_maestro_usuario WHERE u.usuario = '$user' AND u.password = '$clave' AND u.id_estado = 1 AND mu.activo = 1");
+            $clave = mysqli_real_escape_string($conexion, $_POST['inputPassword']);
+            $newClave = password_hash($clave, PASSWORD_BCRYPT, ['cost' => 12]);
+            $query = mysqli_query($conexion, "SELECT u.*, t.tipo AS tipo_user, mu.id AS usuario_maestro FROM usuarios AS u 
+                                  INNER JOIN tipo_usuarios AS t ON t.id_tipo = u.id_tipo 
+                                  INNER JOIN maestro_usuario AS mu ON mu.id = u.id_maestro_usuario 
+                                  WHERE u.usuario = '$user' AND u.id_estado = 1 AND mu.activo = 1");
 
             $resultado = mysqli_num_rows($query);
             if ($resultado > 0) {
-                date_default_timezone_set('America/Bogota');
-                $dato = mysqli_fetch_array($query);
-                $_SESSION['userBabyShowerActive'] = true;
-                $_SESSION['idUser'] =  $dato['id_usuario'];
-                $_SESSION['nombre'] = $dato['nombres'];
-                $_SESSION['apellido'] = $dato['apellidos'];
-                $_SESSION['usuario'] = $dato['usuario'];
-                $_SESSION['id_tipo'] = $dato['id_tipo'];
-                $_SESSION['tipo'] = $dato['tipo_user'];
-                $_SESSION['usuario_maestro'] = $dato['usuario_maestro'];
+                $dato = mysqli_fetch_assoc($query);
+                // Verificar la contraseña ingresada contra el hash almacenado
+                if (password_verify($clave, $dato['password'])) {
+                    date_default_timezone_set('America/Bogota');
+                    $_SESSION['userBabyShowerActive'] = true;
+                    $_SESSION['idUser'] =  $dato['id_usuario'];
+                    $_SESSION['nombre'] = $dato['nombres'];
+                    $_SESSION['apellido'] = $dato['apellidos'];
+                    $_SESSION['usuario'] = $dato['usuario'];
+                    $_SESSION['id_tipo'] = $dato['id_tipo'];
+                    $_SESSION['tipo'] = $dato['tipo_user'];
+                    $_SESSION['usuario_maestro'] = $dato['usuario_maestro'];
 
-                $fechaActual = date('d/m/Y H:i:s');
-                $isuser = $_SESSION['idUser'];
-                $sql_update = "UPDATE usuarios set ultimo_ingreso = '$fechaActual' WHERE id_usuario = '$isuser'";
+                    $fechaActual = date('d/m/Y H:i:s');
+                    $isuser = $_SESSION['idUser'];
+                    $sql_update = "UPDATE usuarios set ultimo_ingreso = '$fechaActual' WHERE id_usuario = '$isuser'";
 
-                if ($_SESSION['id_tipo'] == 1 || $_SESSION['id_tipo'] == 4) {
-                    mysqli_query($conexion, $sql_update);
-                    header('location: ./admin/index.php');
-                } else if ($_SESSION['id_tipo'] == 2) {
-                    mysqli_query($conexion, $sql_update);
-                    header('location: index.php');
-                }else if($_SESSION['id_tipo'] == 3){
-                    mysqli_query($conexion, $sql_update);
-                    header('location: ./admin/index.php');
+                    if ($_SESSION['id_tipo'] == 1 || $_SESSION['id_tipo'] == 4) {
+                        mysqli_query($conexion, $sql_update);
+                        header('location: ./admin/index.php');
+                    } else if ($_SESSION['id_tipo'] == 2) {
+                        mysqli_query($conexion, $sql_update);
+                        header('location: index.php');
+                    }else if($_SESSION['id_tipo'] == 3){
+                        mysqli_query($conexion, $sql_update);
+                        header('location: ./admin/index.php');
+                    }
+                } else {
+                    $alert = '<div class="alert alert-danger" role="alert">
+                    Usuario y/o Contraseña Incorrecta
+                    </div>';
+                    session_destroy();
                 }
+
+                
             } else {
                 $alert = '<div class="alert alert-danger" role="alert">
                 Usuario y/o Contraseña Incorrecta
@@ -65,7 +79,7 @@ if (!empty($_SESSION['userBabyShowerActive'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Login - SB Admin</title>
+    <title>Login - BS Admin</title>
     <link href="../admin/css/styles.css" rel="stylesheet" />
     <link href="../admin/css/styles.css" rel="stylesheet" />
     <link rel="stylesheet" href="style.css">

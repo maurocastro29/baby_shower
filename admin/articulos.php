@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (empty($_SESSION['userBabyShowerActive'])) {
-    header('location: ../login.php');
+    header('location: ../home.php');
 }
 if ($_SESSION['id_tipo'] != 1) {
     header('location: ../');
@@ -32,14 +32,13 @@ if (isset($_REQUEST['id'])) {
 ?>
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Articulos - SA Admin</title>
+    <title>Articulos - BS Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
     <link href="../admin/css/styles.css" rel="stylesheet" />
     <link rel="icon" type="image/jpg" href="../admin/img/logo.ico">
@@ -48,7 +47,6 @@ if (isset($_REQUEST['id'])) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../admin/js/jquery-ui/jquery-ui.min.css">
 </head>
-
 <body class="sb-nav-fixed">
     <?php include('menus/menu_superior.php'); 
     ?>

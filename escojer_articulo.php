@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (empty($_SESSION['userBabyShowerActive'])) {
-  header('location: login.php');
+  header('location: home.php');
 }
 
 if(isset($_REQUEST['id'])){

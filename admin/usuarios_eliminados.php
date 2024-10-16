@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (empty($_SESSION['userBabyShowerActive'])) {
-    header('location: ../login.php');
+    header('location: ../home.php');
 }
 if ($_SESSION['id_tipo'] != 1) {
     header('location: ../');
@@ -16,7 +16,7 @@ if ($_SESSION['id_tipo'] != 1) {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Usuarios eliminados - SA Admin</title>
+    <title>Usuarios eliminados - BS Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
     <link href="../admin/css/styles.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/estilos.css">

@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (empty($_SESSION['userBabyShowerActive'])) {
-    header('location: ../login.php');
+    header('location: ../home.php');
 }
 if ($_SESSION['id_tipo'] != 1) {
     header('location: ../');
@@ -22,13 +22,14 @@ if (!empty($_POST)) {
         $idArticulo = $_REQUEST['edit'];
         $articulo = $_POST['articulo'];
         $detalle = $_POST['descripcion'];
+        $stock = $_POST['stock'];
         // Obtener el nombre de la imagen anterior desde la base de datos
         $sql = "SELECT imagen FROM articulos WHERE id_articulo = '$idArticulo' AND id_maestro_usuario = '$usuarioMaestro'";
         $resultado = mysqli_query($conexion, $sql);
         $fila = mysqli_fetch_assoc($resultado);
         $imagenAnterior = $fila['imagen'];
 
-        if(!empty( $_FILES['imagenNueva'])){
+        if(empty( $_FILES['imagenNueva'])){
             $nombre_archivo = $_FILES['imagenNueva']['name'];
             $tipo_archivo = $_FILES['imagenNueva']['type'];
             $tamano_archivo = $_FILES['imagenNueva']['size'];
@@ -42,7 +43,7 @@ if (!empty($_POST)) {
 
                 
                 
-                $sql = "UPDATE articulos SET nombre = '$articulo', detalle = '$detalle', imagen = '$ruta_archivo' WHERE id_articulo = '$idArticulo' AND id_maestro_usuario = '$usuarioMaestro'";
+                $sql = "UPDATE articulos SET nombre = '$articulo', detalle = '$detalle', total = '$stock', imagen = '$ruta_archivo' WHERE id_articulo = '$idArticulo' AND id_maestro_usuario = '$usuarioMaestro'";
                 $result = mysqli_query($conexion, $sql);
 
                 if ($result) {
@@ -67,7 +68,7 @@ if (!empty($_POST)) {
                         </div>';
             }
         }else{
-            $sql = "UPDATE articulos SET nombre = '$articulo', detalle = '$detalle' WHERE id_articulo = '$idArticulo' AND id_maestro_usuario = '$usuarioMaestro'";
+            $sql = "UPDATE articulos SET nombre = '$articulo', detalle = '$detalle', total = '$stock' WHERE id_articulo = '$idArticulo' AND id_maestro_usuario = '$usuarioMaestro'";
             $result = mysqli_query($conexion, $sql);
             if ($result) {
                 $alert = '<div class="alert alert-primary" role="alert">
@@ -152,27 +153,35 @@ if (empty($_REQUEST['id']) && $editar == false) {
                                     <div class="col-sm-4 text-center">
                                         <img src="imagenes/<?php echo $fila["imagen"]; ?>" class="img-fluid img-editar rounded border">
                                     </div>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-8">
                                         <form action="articulos_editar.php?edit=<?php  echo $fila["id_articulo"]; ?>" method="post"  enctype="multipart/form-data">
-                                            <div class="col-sm-12">
-                                                <div class=" mb-3 mb-md-0">
-                                                    <label for="imagenNueva"><b>Nueva foto</b></label>
-                                                    <input class="form-control" name="imagenNueva" id="imagenNueva" type="file" placeholder="Foto del articulo"/>
+                                            <div class="row">
+                                                <div class="col-sm-12 col-md-6">
+                                                    <label for="articulo"><b>Nombre del artículo</b></label>
+                                                    <div class="">
+                                                        <input type="text" value="<?php echo htmlspecialchars(trim($fila["nombre"]));?>" class="form-control" name="articulo" id="articulo" placeholder="Ingrese el nombre del articulo" required/>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-sm-12">
-                                                <label for="articulo"><b>Nombre del artículo</b></label>
-                                                <div class="">
-                                                    <input type="text" value="<?php echo htmlspecialchars(trim($fila["nombre"]));?>" class="form-control" name="articulo" id="articulo" placeholder="Ingrese el nombre del articulo" required/>
+                                                <div class="col-sm-12 col-md-6">
+                                                    <label for="stock"><b>Cantidad del artículo</b></label>
+                                                    <div class="">
+                                                        <input type="number" value="<?php echo htmlspecialchars(trim($fila["total"]));?>" class="form-control" name="stock" id="stock" placeholder="Cantidad del artículo" required/>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-sm-12">
-                                                <label for="articulo"><b>Descripción</b></label>
-                                                <div class="">
-                                                    <textarea rows="4" col="10" class="form-control" name="descripcion" id="descripcion" type="text" placeholder="Ingrese la descripción del articulo" required><?php echo $fila["detalle"]; ?></textarea>
+                                                <div class="col-sm-12 col-md-6 col-lg-6">
+                                                    <div class=" mb-3 mb-md-0">
+                                                        <label for="imagenNueva"><b>Nueva imagen</b></label>
+                                                        <input class="form-control" name="imagenNueva" id="imagenNueva" type="file" placeholder="Foto del articulo"/>
+                                                    </div>
                                                 </div>
+                                                <div class="col-sm-12">
+                                                    <label for="articulo"><b>Descripción</b></label>
+                                                    <div class="">
+                                                        <textarea rows="4" col="10" class="form-control" name="descripcion" id="descripcion" type="text" placeholder="Ingrese la descripción del articulo" required><?php echo $fila["detalle"]; ?></textarea>
+                                                    </div>
+                                                </div>
+                                                <button class="btn btn-success mt-3">Enviar</button>
                                             </div>
-                                            <button class="btn btn-success mt-3">Enviar</button>
                                         </form>
                                     </div>
                                 <?php

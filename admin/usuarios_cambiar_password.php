@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (empty($_SESSION['userBabyShowerActive'])) {
-    header('location: ../login.php');
+    header('location: ../home.php');
 }
 if ($_SESSION['id_tipo'] != 1) {
     header('location: ../');
@@ -14,9 +14,9 @@ if (!empty($_POST)) {
     if (!empty($_SESSION['idUser'])) {
         $id = $_SESSION['idUser'];
         $user = $_SESSION['usuario'];
-        $passwOld = md5($_POST['inputPasswordOld']);
-        $passw = md5($_POST['inputPassword']);
-        $confirmarPassword = md5($_POST['inputPasswordConfirm']);
+        $passwOld = password_hash($_POST['inputPasswordOld'], PASSWORD_BCRYPT, ['cost' => 12]);
+        $passw = password_hash($_POST['inputPassword'], PASSWORD_BCRYPT, ['cost' => 12]);
+        $confirmarPassword = password_hash($_POST['inputPasswordConfirm'], PASSWORD_BCRYPT, ['cost' => 12]);
         $sqlOld = "SELECT u.password FROM usuarios AS u WHERE u.id_usuario = '$id' AND u.usuario = '$user' and u.password = '$passwOld'";
         $resulOld = mysqli_query($conexion, $sqlOld);
         $resulOld2 = mysqli_num_rows($resulOld);
@@ -75,7 +75,7 @@ $user = $_SESSION['usuario'];
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Cambiar contraseña - SA Admin</title>
+    <title>Cambiar contraseña - BS Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
     <link href="../admin/css/styles.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/estilos.css">

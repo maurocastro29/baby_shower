@@ -23,6 +23,7 @@ $telefono = $_SESSION["telefono"] ?? '';
 $correo = $_SESSION["correo"] ?? '';
 
 $message = "";
+$messageExito = "Exito: el nuevo usuario ha sido creado.";
 
 // Procesar el formulario si se ha enviado
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -42,36 +43,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             require_once "conexion.php";
 
-            // Preparar la consulta SQL para evitar inyecciones SQL
-            $sql = "SELECT COUNT(*) FROM usuarios WHERE usuario = ?";
+            $sql = "SELECT 
+            (SELECT COUNT(*) FROM maestro_usuario WHERE usuario = ?) +
+            (SELECT COUNT(*) FROM usuarios WHERE usuario = ?) AS total_count";
             $stmt = $conexion->prepare($sql);
-            $stmt->bind_param("s", $usuario);
+            $stmt->bind_param("ss", $usuario, $usuario);
             $stmt->execute();
-            $stmt->bind_result($count);
-            $stmt->fetch();
-            $stmt->close();
+            $result = $stmt->get_result();
+            $row = $result->fetch_assoc();
 
-            if ($count > 0) {
-                $message = "El usuario ya existe. Por favor, elige otro nombre de usuario.";
+            if ($row['total_count'] > 0) {
+                $message = "El usuario ya existe. Por favor, elija otro nombre de usuario.";
             } else {
-                $passwordNew = md5($password);
+                $passwordNew = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
                 $fechaActual = (new DateTime())->format('d/m/Y');
                 $sqlMaestroUsuario = 
-                "INSERT INTO maestro_usuario (id_tipo_identificacion, identificacion, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, usuario, password, activo, celular, correo, fecha_registro, id_tipo_usuario) VALUES ('$tipoIdentificacion', '$numeroIdentificacion', '$primerNombre', '$segundoNombre', '$primerApellido', '$segundoApellido', '$usuario', '$passwordNew', 1, '$telefono', '$correo', '$fechaActual', 1)";
-
-                $sqlConsulta = "SELECT id FROM maestro_usuario where identificacion = ?";
-                $stmt = $conexion->prepare($sqlConsulta);
-                $stmt->bind_param('s', $usuario); // 's' para cadena de caracteres
-                $stmt->execute();
-                $result = $stmt->get_result();
-                if ($result->num_rows > 0){
+                "INSERT INTO maestro_usuario (id_tipo_identificacion, identificacion, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, usuario, password, activo, celular, correo, fecha_registro, id_tipo_usuario) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?, 1)";
+                $stmt = $conexion->prepare($sqlMaestroUsuario);
+                $stmt->bind_param('sssssssssss', $tipoIdentificacion, $numeroIdentificacion, $primerNombre, $segundoNombre, $primerApellido, $segundoApellido, $usuario, $passwordNew, $telefono, $correo, $fechaActual);
+                if ($stmt->execute()){
+                  $sqlConsulta = "SELECT id FROM maestro_usuario where correo = ?";
+                  $stmt = $conexion->prepare($sqlConsulta);
+                  $stmt->bind_param('s', $correo); // 's' para cadena de caracteres
+                  $stmt->execute();
+                  $result = $stmt->get_result();
+                  if ($result->num_rows > 0){
                     $row = $result->fetch_assoc();
-                    $idUsuarioExistente = $row['id'];
-                    $nombres = $primerNombre .' ' . $segundoNombre
-                    $sqlUsuario = "INSERT INTO usuarios (nombres, apellidos, usuario, password, id_tipo, id_estado, id_maestro_usuario) VALUES ('$primerNombre')";
+                    $idUsuarioCreado = $row['id'];
+                    $nombres = $primerNombre .' ' . $segundoNombre;
+                    $apellidos = $primerApellido .' ' . $segundoApellido;
+                    // Insertar en usuarios
+                    $sqlUsuario = "INSERT INTO usuarios (nombres, apellidos, usuario, password, id_tipo, id_estado, id_maestro_usuario) 
+                    VALUES (?, ?, ?, ?, 1, 1, ?)";
+                    $stmt = $conexion->prepare($sqlUsuario);
+                    $stmt->bind_param('ssssi', $nombres, $apellidos, $usuario, $passwordNew, $idUsuarioCreado);
+                    $stmt->execute();
+                    $result2 = $stmt->get_result();
+                    if ($result2->num_rows > 0){
+                      $messageExito = "Exito: el nuevo usuario ha sido creado.";
+                    }
+                  } else {
+                    $message = "Error: No se pudo encontrar el usuario creado.";
+                  }
+                } else {
+                  $message = "Error al crear el usuario en maestro_usuario.";
                 }
-
-                
             }
             mysqli_close($conexion);
         }
@@ -95,77 +112,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body class="bg-light">
-<!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-light bg-primary shadow fixed-top">
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <a class="navbar-brand text-white" href="home.php">My Babyshower</a>
 
-  <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-      <li class="nav-item">
-        <a class="nav-link text-white" href="quienes-somos.php">Quienes somos</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-white" href="contactanos.php">Contáctanos</a>
-      </li>
-    </ul>
-    <div class="form-inline my-2 my-lg-0">
-        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            <li class="nav-item active">
-                <!-- Botón para abrir el modal de inicio de sesión -->
-                <a class="nav-link text-white" href="#" data-toggle="modal" data-target="#loginModal">Iniciar sesión</a>
-            </li>
-            <li class="nav-item border border-white">
-                <a class="nav-link mx-2 text-white" href="registrar-datos-personal.php">Registrarse</a>
-            </li>
-        </ul>
-    </div>
-  </div>
-</nav>
-
-<!-- Modal de inicio de sesión -->
-<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="loginModalLabel">Iniciar Sesión</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form action="login.php" method="post">
-          <div class="form-group">
-            <label for="inputUsuario">Usuario</label>
-            <input type="text" class="form-control" id="inputUsuario" name="inputUsuario" required>
-          </div>
-          <div class="form-group">
-            <label for="inputPassword">Contraseña:</label>
-            <input type="password" class="form-control" id="inputPassword" name="inputPassword" required>
-          </div>
-          <button type="submit" class="btn btn-primary">Iniciar sesión</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- Page Content -->
-<section class="py-5 mt-5">
+<section class="py-5">
   <div class="container">
     <h2 class="fw-light text-center pb-3">Registro de usuario</h2>
     <div class="container mt-2">
         <div class="row justify-content-center">
-            <div class="col-md-5 rounded border border-primary bg-white shadow p-3">
+            <div class="col-md-5 rounded border bg-white shadow p-3">
             <h5 class="text-center mt-1 mb-5 text-primary"><b>Registrar datos de acceso</b></h5>
             <?php 
                 if(!empty($message)){
                     echo '<div class="bg-warning border rounded mb-2"><p class="mx-2 my-1">'.$message.'</p></div>';
                 }
+                if(!empty($messageExito)){
+                  echo '<div class="bg-success border rounded shadow mb-2 text-white"><p class="mx-2 my-1">'.$messageExito.'<a class="btn  mx-2 text-white bold" href="home.php"><b>Iniciar sesión</b></a></p></div>';
+              }
             ?>
-            <form method="POST" action="registrar-datos-acceso.php">
+            <form method="POST" id="formRegistroAcceso">
                 <p class="text-secondary text-small">Ingrese los siguientes datos</p>
                 <div class="form-row justify-content-center">
                     <div class="form-group col-md-12">
@@ -183,8 +148,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <!-- Campo oculto para el token CSRF -->
                     <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
                 </div>
-                <div class="d-flex justify-content-center">
-                    <input type="submit" class="btn btn-primary" value="Crear cuenta">
+                <div class="d-flex my-3 justify-content-center">
+                    <a class="btn  mx-2 text-danger" href="home.php">Cancelar</a>
+                    <input type="submit" class="btn btn-success mx-2" value="Crear cuenta">
                 </div>
             </form>
             </div>
@@ -192,6 +158,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
   </div>
 </section>
-
+<script src="js/registrarDatosAcceso.js"></script>
 </body>
 </html>

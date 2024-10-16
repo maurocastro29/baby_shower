@@ -1,23 +1,75 @@
 <?php
 session_start();
 if (empty($_SESSION['userBabyShowerActive'])) {
-  header('location: login.php');
+  header('location: home.php');
 }
 
 if (!empty($_POST)) {
   include('conexion.php');
   $idArticulo = $_POST['idArticulo'];
   $idUsuario = $_SESSION['idUser'];
-  $sql = "UPDATE articulos SET id_usuario = 3 WHERE id_articulo = '$idArticulo'";
-  $result = mysqli_query($conexion, $sql);
-  if ($result) {
-    $alert = '<div class="alert alert-primary" role="alert">
-                Articulo retirado exitosamente
-                </div>';
-  } else {
-    $alert = '<div class="alert alert-danger" role="alert">
-                Error al eliminar articulo
-                </div>';
+
+  $sqlArticuloEliminar = "select id FROM articulos_elegidos WHERE id_articulo = '$idArticulo' AND id_usuario = '$idUsuario' LIMIT 1";
+  $resultIdEliminar = mysqli_query($conexion, $sqlArticuloEliminar);
+  $rowIdEliminar = mysqli_fetch_assoc($resultIdEliminar);
+  $idEliminar = $rowIdEliminar['id'];
+
+  $sqlValidar = "SELECT count(*) AS total FROM articulos_elegidos WHERE id_articulo = '$idArticulo'";
+  $result = mysqli_query($conexion, $sqlValidar);
+  $row = mysqli_fetch_assoc($result);
+  if ($row['total'] > 0){
+    $sqlEliminar = "DELETE FROM articulos_elegidos WHERE id = ?";
+    $stmt = $conexion->prepare($sqlEliminar);
+    $stmt->bind_param('s', $idEliminar);
+    if ($stmt->execute()) {
+      $sqlConsultarCantidad = "SELECT count(*) AS total FROM articulos_elegidos WHERE id_articulo = '$idArticulo'";
+      $result = mysqli_query($conexion, $sqlConsultarCantidad);
+      $row = mysqli_fetch_assoc($result);
+      if ($row['total'] > 0){
+        $nuevoValor = $row['total'];
+        $sqlactualizar = "UPDATE articulos SET cantidad = $nuevoValor WHERE id_articulo = '$idArticulo' AND estado = 1";
+        $resultado = mysqli_query($conexion, $sqlactualizar);
+        if ($resultado) {
+          $alert = '<div class="alert alert-success" role="alert">
+                      Articulo seleccionado correctamente
+                      </div>';
+        } else {
+          $alert = '<div class="alert alert-danger" role="alert">
+                      Error al seleccionar articulo
+                      </div>';
+        }
+      }else{
+        $sqlactualizar = "UPDATE articulos SET cantidad = 0 WHERE id_articulo = '$idArticulo' AND estado = 1";
+        $resultado = mysqli_query($conexion, $sqlactualizar);
+        if ($resultado) {
+          $alert = '<div class="alert alert-success" role="alert">
+                      Articulo seleccionado correctamente
+                      </div>';
+        } else {
+          $alert = '<div class="alert alert-danger" role="alert">
+                      Error al seleccionar articulo
+                      </div>';
+        }
+      }
+    }else{
+      $alert = '<div class="alert alert-danger" role="alert">
+                  Error al eliminar articulo
+                  </div>';
+    }
+    $sqlConsultarCantidad = "SELECT cantidad, total FROM articulos WHERE id_articulo = '$idArticulo'";
+    $result = mysqli_query($conexion, $sqlConsultarCantidad);
+  }else if ($row['total'] == 1){
+    $sqlactualizar = "UPDATE articulos SET cantidad = 0 WHERE id_articulo = '$idArticulo' AND estado = 1";
+    $resultado = mysqli_query($conexion, $sqlactualizar);
+    if ($resultado) {
+      $alert = '<div class="alert alert-success" role="alert">
+                  Articulo seleccionado correctamente
+                  </div>';
+    } else {
+      $alert = '<div class="alert alert-danger" role="alert">
+                  Error al seleccionar articulo
+                  </div>';
+    }
   }
 }
 $usuarioMaestro = $_SESSION['usuario_maestro'];
@@ -27,7 +79,7 @@ $usuarioMaestro = $_SESSION['usuario_maestro'];
 <html>
 
 <head>
-  <title>Lista de Artículos</title>
+  <title>Lista de artículos</title>
   <!-- Agrega las bibliotecas de Bootstrap -->
 
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
@@ -69,7 +121,7 @@ $usuarioMaestro = $_SESSION['usuario_maestro'];
 
         // Consulta para obtener los datos de la tabla
         $idUser = $_SESSION['idUser'];
-        $sql = "SELECT * FROM articulos WHERE id_usuario = '$idUser' AND estado = 1 AND id_maestro_usuario = '$usuarioMaestro'";
+        $sql = "SELECT a.*, COUNT(ae.id_articulo) AS elegidos FROM articulos AS a INNER JOIN articulos_elegidos AS ae ON ae.id_articulo = a.id_articulo WHERE ae.id_usuario = '$idUser' AND a.estado = 1 AND a.id_maestro_usuario = '$usuarioMaestro'GROUP BY a.id_articulo";
         $resultado = mysqli_query($conexion, $sql);
 
         if (mysqli_num_rows($resultado) > 0) {
@@ -84,6 +136,7 @@ $usuarioMaestro = $_SESSION['usuario_maestro'];
                       '<img src="./admin/imagenes/'.($fila["imagen"]).'" class="img-articulo2">'.
                       '<h5 class="card-title mt-3"><'.$fila["nombre"].'</h5>'.
                       '<p class="card-text">'.$fila["detalle"].'</p>'.
+                      '<div>'.$fila["elegidos"].'/'.$fila["total"].'</div></br>'.
                       '<input type="submit" class="btn btn-danger" value="Eliminar"></input>'.
                     '</div>'.
                   '</div>'.

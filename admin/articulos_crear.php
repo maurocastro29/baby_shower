@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (empty($_SESSION['userBabyShowerActive'])) {
-    header('location: ../login.php');
+    header('location: ../home.php');
 }
 if ($_SESSION['id_tipo'] != 1) {
     header('location: ../');
@@ -13,6 +13,8 @@ $usuarioMaestro = $_SESSION['usuario_maestro'];
 if (isset($_POST['submit'])) {
     $articulo = $_POST['articulo'];
     $detalle = $_POST['detalle'];
+    $stock = $_POST['stock'];
+    $cantidad = 0;
 
     // Obtener los detalles del archivo cargado
     $nombre_archivo = $_FILES['imagen']['name'];
@@ -28,7 +30,7 @@ if (isset($_POST['submit'])) {
     $tipo_imagen = mime_content_type($tmp_archivo);
     if (in_array($tipo_imagen, $permitidos) && $tamano_archivo < 1000000) {
         // Si el archivo es válido, guardar la información en la base de datos
-        $sql = "INSERT INTO articulos (nombre, detalle, imagen, estado, id_usuario, id_maestro_usuario) VALUES ('$articulo', '$detalle', '$ruta_archivo', 1, 3, '$usuarioMaestro')";
+        $sql = "INSERT INTO articulos (nombre, detalle, cantidad, total, imagen, estado, id_usuario, id_maestro_usuario) VALUES ('$articulo', '$detalle', '$cantidad', '$stock', '$ruta_archivo', 1, 3, '$usuarioMaestro')";
         $result = mysqli_query($conexion, $sql);
 
         if ($result) {
@@ -59,7 +61,7 @@ if (isset($_POST['submit'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Articulos - SA Admin</title>
+    <title>Crear articulos - BS Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
     <link href="../admin/css/styles.css" rel="stylesheet" />
     <link rel="icon" type="image/jpg" href="../admin/img/logo.ico">
@@ -93,13 +95,19 @@ if (isset($_POST['submit'])) {
                             <?php echo isset($alert) ? $alert : ''; ?>
                             <form action="articulos_crear.php" method="post" enctype="multipart/form-data">
                                 <div class="row">
-                                    <div class="col-sm-6 col-md-6 col-lg-4 mb-3">
+                                    <div class="col-sm-6 col-md-6 col-lg-5 mb-3">
                                         <div class="form-floating mb-3 mb-md-0">
                                             <input class="form-control" name="articulo" id="articulo" type="text" placeholder="Ingrese el nombre del articulo" required />
                                             <label for="articulo">Nombre del artículo</label>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6 col-md-6 col-lg-5 mb-3">
+                                    <div class="col-sm-6 col-md-6 col-lg-3 mb-3">
+                                        <div class="form-floating mb-3 mb-md-0">
+                                            <input class="form-control" name="stock" id="stock" type="number" placeholder="Ingrese la cantidad de darticulos" required />
+                                            <label for="stock">Cantidad de articulos</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6 col-lg-4 mb-3">
                                         <div class=" mb-3 mb-md-0">
                                             <label for="imagen">Foto del Artículo</label>
                                             <input class="form-control" name="imagen" id="imagen" type="file" placeholder="Foto del articulo" required />

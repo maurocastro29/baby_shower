@@ -1,25 +1,42 @@
 <?php
 session_start();
 if (empty($_SESSION['userBabyShowerActive'])) {
-    header('location: ../login.php');
+    header('location: ../home.php');
 }
 if ($_SESSION['id_tipo'] != 1) {
     header('location: ../');
 }
 $usuarioMaestro = $_SESSION['usuario_maestro'];
-if (empty($_POST)) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     include('../conexion.php');
-    $idArticulo = $_REQUEST['quitar'];
-    $sql = "UPDATE articulos SET id_usuario = 3 WHERE id_articulo = '$idArticulo' AND id_maestro_usuario = '$usuarioMaestro'";
-    $result = mysqli_query($conexion, $sql);
-    if ($result) {
-        $alert = '<div class="alert alert-primary" role="alert">
-                       Articulo retirado exitosamente
-                    </div>';
-    } else {
-        $alert = '<div class="alert alert-danger" role="alert">
-                    Error al retirar articulo
-                </div>';
+    if (isset($_REQUEST['quitar']) && isset($_POST['idUsuario'])){
+        $idArticulo = $_REQUEST['quitar'];
+        $idUsuarioEliminar = $_POST['idUsuario'];
+
+        $sqlConsultarCantidad = "SELECT count(*) AS total FROM articulos_elegidos WHERE id_articulo = '$idArticulo' AND id_usuario = '$idUsuarioEliminar'";
+        $result = mysqli_query($conexion, $sqlConsultarCantidad);
+        $row = mysqli_fetch_assoc($result);
+
+
+        // Eliminar artículo elegido
+        $sqlEliminar = "DELETE FROM articulos_elegidos WHERE id_articulo = ? AND id_usuario = ?";
+        $stmt = $conexion->prepare($sqlEliminar);
+        $stmt->bind_param('si', $idArticulo, $idUsuarioEliminar); // Cambia el tipo de datos si es necesario
+
+
+        if ($stmt->execute()){
+            $sqlactualizar = "UPDATE articulos SET cantidad = 0 WHERE id_articulo = '$idArticulo' AND estado = 1";
+            $resultado = mysqli_query($conexion, $sqlactualizar);
+            if ($resultado) {
+            $alert = '<div class="alert alert-success" role="alert">
+                        Articulo retirado exitosamente
+                        </div>';
+            } else {
+            $alert = '<div class="alert alert-danger" role="alert">
+                        Error al retirar articulo
+                        </div>';
+            }
+        }
     }
 }
 
@@ -33,7 +50,7 @@ if (empty($_POST)) {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Articulos - SA Admin</title>
+    <title>Detalle articulos - BS Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
     <link href="../admin/css/styles.css" rel="stylesheet" />
     <link rel="icon" type="image/jpg" href="../admin/img/logo.ico">
@@ -71,45 +88,55 @@ if (empty($_POST)) {
 
                             // Consulta para obtener los datos de la tabla
                             $idArticulo = isset($_REQUEST['id']) ? $_REQUEST['id'] : $_REQUEST['quitar'];
-                            $sql = "SELECT a.*, u.* FROM articulos AS a INNER JOIN usuarios AS u ON u.id_usuario = a.id_usuario WHERE a.id_articulo = '$idArticulo' AND a.id_maestro_usuario = '$usuarioMaestro'";
-                            $resultado = mysqli_query($conexion, $sql);
+                            $sqlArticulo = "SELECT * FROM articulos WHERE id_articulo = '$idArticulo'";
+                            $sqUsuarios = "SELECT u.id_usuario, u.nombres, u.apellidos FROM articulos AS a INNER JOIN articulos_elegidos AS ae ON ae.id_articulo = a.id_articulo 
+                            INNER JOIN usuarios AS u ON u.id_usuario = ae.id_usuario WHERE a.id_articulo = '$idArticulo' AND a.id_maestro_usuario = '$usuarioMaestro'";
+                            $resultadoUsuarios = mysqli_query($conexion, $sqUsuarios);
+                            $resultadArticulo = mysqli_query($conexion, $sqlArticulo);
 
-                            if (mysqli_num_rows($resultado) > 0) {
-                                // Muestra los datos de la tabla
+                            if (mysqli_num_rows($resultadArticulo) > 0) {
                             ?>
                                 <div class="row justify-content-center">
                                     <?php
-                                    $fila = mysqli_fetch_assoc($resultado)
+                                    $datosArticulo = mysqli_fetch_assoc($resultadArticulo)
                                     ?>
-                                    <div class="row justify-content-center">
-                                        <div class="col-sm-3 col-md-4">
+                                        <div class="col-sm-6 col-md-6 col-lg-4">
                                             <div class="articulos">
-                                                <img src="imagenes/<?php echo $fila["imagen"]; ?>" class="img-fluid rounded">
+                                                <img src="imagenes/<?php echo $datosArticulo["imagen"]; ?>" class="img-fluid rounded">
                                             </div>
                                         </div>
-                                        <div class="col-sm-3 col-md-8 ">
+                                        <div class="col-sm-6 col-md-6 col-lg-4">
                                             <div>
                                                 <h5 class="card-title">Nombre <br></h5>
-                                                <p class="card-text"><?php echo $fila["nombre"]; ?></p>
+                                                <p class="card-text"><?php echo $datosArticulo["nombre"]; ?></p>
                                                 <h5 class="">Descripción</h5>
-                                                <p ><?php echo $fila["detalle"]; ?></p>
+                                                <p ><?php echo $datosArticulo["detalle"]; ?></p>
                                             </div>
+                                            
+                                        </div>
+                                        <div class="col-sm-12 col-md-6 col-lg-4">
                                             <div class="text-center mt-4">
-                                                <?php if ($fila["id_usuario"] != 3) { ?>
-                                                    <div class=" btn btn-success">
+                                                <?php   if (mysqli_num_rows($resultadoUsuarios) > 0) { 
+                                                    ?>
+                                                    <div class="card shadow bg-success p-2 text-white">
                                                         <h5 class="card-title">Artículo elegido por:</h5><br>
-                                                        <p class="card-text"><?php echo $fila["nombres"] . ' ' . $fila["apellidos"]; ?></p>
-
+                                                        <?php  while ($fila = mysqli_fetch_assoc($resultadoUsuarios)) { ?>
+                                                            <div class="d-flex align-items-center mb-3">
+                                                                <form action="articulos_detalle.php?quitar=<?php echo $idArticulo; ?>" method="post" class="me-2">
+                                                                    <label class="card-text mb-0"><?php echo $fila["nombres"] . ' ' . $fila["apellidos"]; ?></label>
+                                                                    <input type="hidden" name="idUsuario" id="idUsuario" value="<?php echo $fila['id_usuario']; ?>">
+                                                                    <button class="btn btn-warning mb-3">Retirar artículo</button>
+                                                                </form>
+                                                                
+                                                            </div>
+                                                        <?php } ?>
                                                     </div>
-                                                    <form action="articulos_detalle.php?quitar=<?php echo $idArticulo; ?>" method="post">
-                                                        <button class="btn btn-primary mt-5">Retirar articulo</button>
-                                                    </form>
-                                                <?php } else { ?>
+                                                <?php
+                                                        } else { ?>
                                                     <h5 class="card-title btn btn-danger">Este articulo aún no ha sido seleccionado por ningún usuario</h5>
                                                 <?php } ?>
                                             </div>
                                         </div>
-                                    </div>
                                 <?php
 
 
