@@ -23,7 +23,7 @@ $telefono = $_SESSION["telefono"] ?? '';
 $correo = $_SESSION["correo"] ?? '';
 
 $message = "";
-$messageExito = "Exito: el nuevo usuario ha sido creado.";
+$messageExito = "";
 
 // Procesar el formulario si se ha enviado
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

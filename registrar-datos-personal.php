@@ -13,6 +13,7 @@ if (isset($_POST['primerNombre'])) {
     $_SESSION["identificacion"] = trim($_POST["numeroIdentificacion"]);
     $_SESSION["telefono"] = trim($_POST["telefono"]);
     $_SESSION["correo"] = trim($_POST["correo"]);
+    $_SESSION["datos-bebe"] = true;
     $_SESSION["crear-usuario"] = true;
     $message = "";
     // Validar campos obligatorios
@@ -24,7 +25,7 @@ if (isset($_POST['primerNombre'])) {
         $message = "El correo electrónico no es válido.";
     } 
     if(empty($message)){
-        header("Location: registrar-datos-acceso.php");
+        header("Location: registrar-datos-evento.php");
         exit(); // Asegura que el script se detenga después de la redirección
     }
 }else{
