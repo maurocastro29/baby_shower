@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 16-10-2024 a las 23:00:06
--- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+-- Servidor: localhost
+-- Tiempo de generación: 23-10-2024 a las 19:30:48
+-- Versión del servidor: 10.4.28-MariaDB
+-- Versión de PHP: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -109,13 +109,15 @@ CREATE TABLE `maestro_usuario` (
   `segundo_nombre` varchar(25) DEFAULT NULL,
   `primer_apellido` varchar(25) NOT NULL,
   `segundo_apellido` varchar(25) DEFAULT NULL,
+  `nombre_bebe` varchar(50) DEFAULT NULL,
+  `sexo_bebe` varchar(1) NOT NULL DEFAULT '3',
+  `fecha_evento` date DEFAULT NULL,
+  `hora_evento` time DEFAULT NULL,
   `usuario` varchar(25) NOT NULL,
-  `password` varchar(62) NOT NULL,
   `activo` int(1) NOT NULL DEFAULT 1,
   `celular` varchar(15) NOT NULL,
   `correo` varchar(75) NOT NULL,
   `fecha_registro` timestamp NOT NULL DEFAULT current_timestamp(),
-  `ultimo_ingreso` date DEFAULT NULL,
   `id_tipo_usuario` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
@@ -123,12 +125,22 @@ CREATE TABLE `maestro_usuario` (
 -- Volcado de datos para la tabla `maestro_usuario`
 --
 
-INSERT INTO `maestro_usuario` (`id`, `id_tipo_identificacion`, `identificacion`, `primer_nombre`, `segundo_nombre`, `primer_apellido`, `segundo_apellido`, `usuario`, `password`, `activo`, `celular`, `correo`, `fecha_registro`, `ultimo_ingreso`, `id_tipo_usuario`) VALUES
-(1, 1, '111', 'Usuario', NULL, 'Root', NULL, 'root', '$2y$12$OtmQ9KdCMrCFs4y0zQ.tPuIskY6PYZT/xUvQupHlXPb8bZM1MgOyy', 1, '', '', '2024-08-29 23:49:47', NULL, 3),
-(2, 1, '123456', 'Athalia', NULL, 'De Alba', NULL, 'thali', '$2y$12$OtmQ9KdCMrCFs4y0zQ.tPuIskY6PYZT/xUvQupHlXPb8bZM1MgOyy', 1, '', '', '2024-08-29 23:50:51', NULL, 3),
-(3, 1, '1082411177', 'Mauricio', 'Miguel', 'Castro', 'Ahumada', 'mauro', '$2y$12$OtmQ9KdCMrCFs4y0zQ.tPuIskY6PYZT/xUvQupHlXPb8bZM1MgOyy', 1, '3043673451', 'mm.castro.29@gmail.com', '2024-08-31 18:01:11', NULL, 3),
-(4, 1, '46545412151', 'Selena', 'Maria', 'Peluffo', 'Camacho', 'selena', '$2y$12$OtmQ9KdCMrCFs4y0zQ.tPuIskY6PYZT/xUvQupHlXPb8bZM1MgOyy', 1, '3106041426', 'selena@gmail.com', '2024-08-31 20:32:47', NULL, 1),
-(9, 1, '1234124412', 'Pablo', '', 'Castro', '', 'pabloC', '$2y$12$.Jspsev66NNGnJ6BUF3RseVrNeS22Qb7P08GClCWbyq5dlpdQwzwO', 1, '', 'pablo.castro@gmail.com', '0000-00-00 00:00:00', NULL, 1);
+INSERT INTO `maestro_usuario` (`id`, `id_tipo_identificacion`, `identificacion`, `primer_nombre`, `segundo_nombre`, `primer_apellido`, `segundo_apellido`, `nombre_bebe`, `sexo_bebe`, `fecha_evento`, `hora_evento`, `usuario`, `activo`, `celular`, `correo`, `fecha_registro`, `id_tipo_usuario`) VALUES
+(1, 1, '111', 'Usuario', NULL, 'Root', NULL, '', '3', NULL, NULL, 'root', 1, '', '', '2024-08-29 23:49:47', 3),
+(2, 1, '123456', 'Athalia', NULL, 'De Alba', NULL, '', '3', NULL, NULL, 'thali', 1, '', '', '2024-08-29 23:50:51', 3),
+(3, 1, '1082411177', 'Mauricio', 'Miguel', 'Castro', 'Ahumada', '', '3', NULL, NULL, 'mauro', 1, '3043673451', 'mm.castro.29@gmail.com', '2024-08-31 18:01:11', 3),
+(4, 1, '46545412151', 'Selena', 'Maria', 'Peluffo', 'Camacho', '', '3', NULL, NULL, 'selena', 1, '3106041426', 'selena@gmail.com', '2024-08-31 20:32:47', 1),
+(9, 1, '1234124412', 'Pablo', '', 'Castro', '', '', '3', NULL, NULL, 'pabloC', 1, '', 'pablo.castro@gmail.com', '0000-00-00 00:00:00', 1),
+(10, 1, '10555566115', 'Camilo', '', 'Sanchez', '', '', '3', '2025-02-22', '18:00:00', 'camilo.andrade', 1, '3163211415', 'camilo.sanchez@gmail.com', '2024-10-22 05:00:00', 1),
+(11, 1, '1055556612', 'Maria', '', 'Conrado', '', 'Alejandra', '2', '2025-02-04', '16:00:00', 'maria2', 1, '3163211413', 'maria.conrado@gmail.com', '2024-10-22 05:00:00', 1),
+(12, 1, '3122115454', 'Alejandra', 'Maria', 'Rios', '', '', '3', '2024-11-23', '18:00:00', 'aleja.rios', 1, '3152141516', 'aleja.rios@gmail.com', '2024-10-22 05:00:00', 1),
+(13, 1, '1222544511', 'Jose', '', 'Rivera', '', 'Manuel', '1', '2024-12-04', '18:30:00', 'jose.rivera', 1, '3143121511', 'jose.rivera@gmail.com', '2024-10-22 05:00:00', 1),
+(14, 1, '10251511216', 'Luis', 'Miguel', 'Castro', 'Camacho', 'Rosa', '2', '2024-11-29', '18:15:00', 'luis.castro', 1, '3121241516', 'luis.castro@gmail.com', '2024-10-22 05:00:00', 1),
+(15, 2, '1055412121', 'Angel', '', 'Romero', '', 'Pedro', '1', '2024-12-27', '17:00:00', 'angel.romero', 1, '3012131512', 'angel.romero@gmail.com', '2024-10-22 05:00:00', 1),
+(16, 1, '10221231516', 'Lucia', '', 'Fernandez', '', 'Ricardo', '1', '2024-11-21', '19:00:00', 'lucia.fernandez', 1, '3121215163', 'lucia.fernandez@gmail.com', '2024-10-22 05:00:00', 1),
+(17, 1, '16554544511', 'Yahir', '', 'Villegas', '', 'Orlando', '1', '2025-02-20', '18:00:00', 'yair.villegas', 1, '3121521615', 'yahir.villegas@gmail.com', '2024-10-22 05:00:00', 1),
+(18, 1, '10555566124', 'Adela', '', 'Cuervo', '', 'Fabiola', '2', '2024-12-26', '16:00:00', 'adela.cuervo', 1, '3163211312', 'adela.cuerco@gmail.com', '2024-10-22 05:00:00', 1),
+(19, 1, '1321151516', 'Carla', '', 'Alvarado', '', 'Valentina', '2', '2024-12-26', '17:00:00', 'carla.alvarado', 1, '3151211415', 'carla.alvarado@gmail.com', '2024-10-22 05:00:00', 1);
 
 -- --------------------------------------------------------
 
@@ -205,7 +217,7 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id_usuario`, `nombres`, `apellidos`, `usuario`, `password`, `id_tipo`, `id_estado`, `id_maestro_usuario`, `ultimo_ingreso`) VALUES
-(1, 'Mauricio', 'Castro', 'mauricio', '$2y$12$OtmQ9KdCMrCFs4y0zQ.tPuIskY6PYZT/xUvQupHlXPb8bZM1MgOyy', 1, 1, 2, '06/10/2024 19:14:16'),
+(1, 'Mauricio', 'Castro', 'mauricio', '$2y$12$OtmQ9KdCMrCFs4y0zQ.tPuIskY6PYZT/xUvQupHlXPb8bZM1MgOyy', 1, 1, 2, '23/10/2024 07:47:49'),
 (2, 'Athalia', 'De Alba', 'thali', '$2y$12$OtmQ9KdCMrCFs4y0zQ.tPuIskY6PYZT/xUvQupHlXPb8bZM1MgOyy', 1, 1, 2, '06/10/2024 18:05:36'),
 (3, 'Usuario', 'Anonimo', 'anonimos', '$2y$12$OtmQ9KdCMrCFs4y0zQ.tPuIskY6PYZT/xUvQupHlXPb8bZM1MgOyy', 2, 1, 2, '15/08/2024 19:46:38'),
 (4, 'Eudis', 'Castro Cassares', 'kike', '$2y$12$OtmQ9KdCMrCFs4y0zQ.tPuIskY6PYZT/xUvQupHlXPb8bZM1MgOyy', 1, 1, 2, '15/08/2024 19:42:30'),
@@ -218,7 +230,17 @@ INSERT INTO `usuarios` (`id_usuario`, `nombres`, `apellidos`, `usuario`, `passwo
 (11, 'Andres', 'Payares', 'andresP', '$2y$12$.Jspsev66NNGnJ6BUF3RseVrNeS22Qb7P08GClCWbyq5dlpdQwzwO', 1, 1, 2, '06/10/2024 15:04:26'),
 (12, 'Ricardo', 'Montez', 'ricardoM', '$2y$12$3UORRBk8MVTBXMB1mKtqG.zEOky.UVCpTkTqccZ6OBcrSmXLWYRty', 1, 1, 2, '04/10/2024 20:05:25'),
 (13, 'Pablo ', 'Castro ', 'pabloC', '$2y$12$.Jspsev66NNGnJ6BUF3RseVrNeS22Qb7P08GClCWbyq5dlpdQwzwO', 1, 1, 9, '06/10/2024 15:34:43'),
-(14, 'Camilo', 'Zarate', 'camiloZ', '$2y$12$OtmQ9KdCMrCFs4y0zQ.tPuIskY6PYZT/xUvQupHlXPb8bZM1MgOyy', 2, 1, 9, '06/10/2024 15:09:10');
+(14, 'Camilo', 'Zarate', 'camiloZ', '$2y$12$OtmQ9KdCMrCFs4y0zQ.tPuIskY6PYZT/xUvQupHlXPb8bZM1MgOyy', 2, 1, 9, '06/10/2024 15:09:10'),
+(15, 'Camilo ', 'Sanchez ', 'camilo.andrade', '$2y$12$X5uxO7DxpAUiSn4OpUmTmuGHCZ0lb7/IXHGDfRIYD2NQdKI9P/CUy', 1, 1, 10, '23/10/2024 10:57:33'),
+(16, 'Maria ', 'Conrado ', 'maria2', '$2y$12$cL3vV5ThYFBFb3fb/PzTZebTJtRBQ/Yz7YE8dM0XBqhG3KCcl0mty', 1, 1, 11, NULL),
+(17, 'Alejandra Maria', 'Rios ', 'aleja.rios', '$2y$12$24twPDHpHQBobuBf5VfeLOHHfZf0DD0hYoOTd5lsV3cmx5RgICCxC', 1, 1, 12, NULL),
+(18, 'Jose ', 'Rivera ', 'jose.rivera', '$2y$12$eE9Tn1I30l8olLKls.aAzuOY/wF18SqLqVI8v34GpPcqjLLWjA0rW', 1, 1, 13, NULL),
+(19, 'Luis Miguel', 'Castro Camacho', 'luis.castro', '$2y$12$WuOc1BANa3r62NBrYVoX0O0whaWZ5B8OGrVQiuBzaU0dv4BhpG5CO', 1, 1, 14, NULL),
+(20, 'Angel ', 'Romero ', 'angel.romero', '$2y$12$uHYMPMg7ZTA.kKite1QHIe31lL75Xf0XpcpPXWZmLCGuonyTTai2u', 1, 1, 15, NULL),
+(21, 'Lucia ', 'Fernandez ', 'lucia.fernandez', '$2y$12$rHbpCAp4Ctn1yRKoBje.ZO6zr/OP3zdNJiB5Q054abed28CUHX1am', 1, 1, 16, NULL),
+(22, 'Yahir ', 'Villegas ', 'yair.villegas', '$2y$12$9IcZkHA3EllCoHSylTuYiOkVXj/fi.tk6CgojKG5b2At3W4XYN8HC', 1, 1, 17, NULL),
+(23, 'Adela ', 'Cuervo ', 'adela.cuervo', '$2y$12$1vWuKaaV9x39qrbVXXRKtOthV2yyh70z/6c4AKQFTt6FcBGlkq1Qa', 1, 1, 18, '22/10/2024 14:05:37'),
+(24, 'Carla ', 'Alvarado ', 'carla.alvarado', '$2y$12$1vWuKaaV9x39qrbVXXRKtOthV2yyh70z/6c4AKQFTt6FcBGlkq1Qa', 1, 1, 19, '23/10/2024 08:43:14');
 
 --
 -- Índices para tablas volcadas
@@ -301,7 +323,7 @@ ALTER TABLE `estados`
 -- AUTO_INCREMENT de la tabla `maestro_usuario`
 --
 ALTER TABLE `maestro_usuario`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT de la tabla `tipo_identificacion`
@@ -319,7 +341,7 @@ ALTER TABLE `tipo_usuarios`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- Restricciones para tablas volcadas
