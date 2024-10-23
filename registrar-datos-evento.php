@@ -8,16 +8,14 @@ if(!$_SESSION["datos-bebe"]){
         // Asignar valores a la sesión
         $_SESSION["nombre-bebe"] = trim($_POST["nombreBebe"]);
         $_SESSION["sexo-bebe"] = trim($_POST["sexoBebe"]);
+        $_SESSION["fecha-evento"] = trim($_POST["fechaEvento"]);
+        $_SESSION["hora-evento"] = trim($_POST["horaEvento"]);
         header("Location: registrar-datos-acceso.php");
         exit(); // Asegura que el script se detenga después de la redirección
-    }else{
-        $message = "El campo de sexo del bebé es obligatorio. elija una de las opciones";
     }
 }else{
     $_SESSION["datos-bebe"] = false;
 }
-
-
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -32,6 +30,7 @@ if(!$_SESSION["datos-bebe"]){
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="style_articulos.css">
   <link rel="stylesheet" href="style.css">
+
 </head>
 
 <body class="bg-light">
@@ -42,13 +41,8 @@ if(!$_SESSION["datos-bebe"]){
     <h2 class="fw-light text-center pb-3">Registro de usuario</h2>
     <div class="container mt-2">
         <div class="row justify-content-center my-5">
-            <div class="col-md-4 rounded border bg-white shadow py-5">
+            <div class="col-md-6 col-lg-5 rounded border bg-white shadow py-5">
             <h5 class="text-center mt-1 mb-5 text-primary"><b>Registra los datos del Baby Shower</b></h5>
-            <?php 
-                if(!empty($message)){
-                    echo '<div class="bg-warning border rounded mb-2"><p class="mx-2 my-1">'.$message.'</p></div>';
-                }
-            ?>
             <form method="post" id="formRegistroEvento">
                 <p class="text-secondary text-samll">Ingrese los siguientes datos</p>
                 <!-- Agrega un contenedor para los mensajes de error -->
@@ -66,10 +60,21 @@ if(!$_SESSION["datos-bebe"]){
                         </select>
                         <span class="text-danger small font-italic">(obligatorio)</span>
                     </div>
+                    <div class="form-group col-md-12">
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="fechaEvento">Fecha del evento</label>
+                                <input type="date" class="form-control" id="fechaEvento" name="fechaEvento" placeholder="Fecha del evento" required>
+                            </div>
+                            <div class="col-6">
+                                <label for="horaEvento">Hora del evento</label>
+                                <input type="time" class="form-control" id="horaEvento" name="horaEvento" value="12:00" required>
+                            </div>
+                        </div>                    
+                    </div>
                 </div>
                 <div class="d-flex justify-content-center pt-4">
                     <a class="nav-link mx-2 text-danger" href="home.php">Cancelar</a>
-                    <a class="nav-link mx-2 text-danger" href="registrar-datos-acceso.php">omitir</a>
                     <input class="btn btn-primary pe-5 ps-5" type="submit" value="Siguiente">
                 </div>
             </form>
@@ -79,5 +84,6 @@ if(!$_SESSION["datos-bebe"]){
   </div>
 </section>
 <script src="js/registrarDatosEvento.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>

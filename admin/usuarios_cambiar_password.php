@@ -9,7 +9,7 @@ if ($_SESSION['id_tipo'] != 1) {
 date_default_timezone_set('America/Bogota');
 include_once("../conexion.php");
 
-if (!empty($_POST)) {
+/*if (!empty($_POST)) {
     $alert = "";
     if (!empty($_SESSION['idUser'])) {
         $id = $_SESSION['idUser'];
@@ -51,7 +51,7 @@ if (!empty($_POST)) {
         }
     }
 }
-/*
+
     function validarPasswordOld($id, $user, $passwOld){
         include("../backend/bd/conexion2.php");
         $sql = "SELECT * FROM usuarios AS u WHERE u.id_usuario = '$id' AND u.usuario = '$user' and u.password = '$passwOld'";
@@ -80,6 +80,7 @@ $user = $_SESSION['usuario'];
     <link href="../admin/css/styles.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/estilos.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
 <body class="sb-nav-fixed">
@@ -98,7 +99,7 @@ $user = $_SESSION['usuario'];
                                     <h3 class="text-center font-weight-light my-4">Cambiar contraseña</h3>
                                 </div>
                                 <div class="card-body">
-                                    <form action="" method="post" autocomplete="off">
+                                    <form action="cambiarPassword" id="formCambiarPassword" method="post" autocomplete="off">
                                         <!--INICIO-->
                                         <?php echo isset($alert) ? $alert : ''; ?>
                                         <div class="row center">
@@ -131,7 +132,7 @@ $user = $_SESSION['usuario'];
                                         </div>
                                         <!--FIN-->
                                         <div class="d-flex align-items-center justify-content-center mt-4 mb-0 btn-reservar">
-                                            <button type="submit" class="btn btn-success text-white pb-2 pt-2 pr-2 mx-2">Confirmar</button>
+                                            <button type="submit" id="btnCambiarPassword" class="btn btn-success text-white pb-2 pt-2 pr-2 mx-2">Confirmar</button>
                                             <a href="usuarios_perfil.php" class="btn btn-danger">Atras</a>
                                         </div>
                                     </form>
@@ -161,6 +162,8 @@ $user = $_SESSION['usuario'];
     <script src="../admin/js/scripts.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
     <script src="../admin/js/datatables-simple-demo.js"></script>
+    <script type="../admin/js/validaciones.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>

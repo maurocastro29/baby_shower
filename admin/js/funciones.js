@@ -1,4 +1,10 @@
+
+alert("Hola mundo");
+
 document.addEventListener("DOMContentLoaded", function () {
+alert("Hola mundo");
+
+
     $('#tbl').DataTable();
     $(".confirmar").submit(function (e) {
         e.preventDefault();

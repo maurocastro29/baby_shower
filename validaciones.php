@@ -1,5 +1,9 @@
 <?php
     include('conexion.php'); // Asegúrate de tener tu conexión a la base de datos aquí
+    // Generar y almacenar el token CSRF si no existe
+    if (!isset($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32)); // Genera un token aleatorio de 32 bytes
+    }
 
     // Verifica qué tipo de validación se está solicitando
     if (isset($_POST['action'])) {
@@ -24,6 +28,8 @@
         }
         // Puedes agregar más validaciones en el futuro aquí, como validar nombre de usuario, etc.
     }
+
+    
 
     // Función para validar si el correo existe en la base de datos
     function validarCorreo($conexion) {
@@ -99,5 +105,7 @@
             $conexion->close();
         }
     }
+
+    
 
 ?>

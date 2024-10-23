@@ -1,4 +1,9 @@
 $(function () {
+    document.addEventListener("DOMContentLoaded", function () {
+    
+    alert("Hola mundo");
+
+});
 
     let editarUsuario = '';
     //EDITAR UN USUARIO
