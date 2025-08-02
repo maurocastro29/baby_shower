@@ -38,35 +38,31 @@ if (!empty($_POST)) {
 </head>
 
 <body>
-  <div class="titulo text-center">
-    <div>
-      <h1 class="titulo-babyshower">BABY SHOWER</h1>
-      <h3 style="font-family: cursive;" class="nombre-bebe">Jossua Zain</h3>
-    </div>
-
-  </div>
-
-  <nav class="navbar navbar-light bg-light justify-content-between mb-3 borde-inferior">
+  <nav class="navbar navbar-light bg-light justify-content-between menu">
     <div class="container">
-      <a href="index.php" class="navbar-brand"  style="color: #0069D9;"><b>Ver lista de articulos</b></a>
-      <div>
-        <a class="btn btn-primary btn-cerrar-sesion" href="logout.php">Cerrar sesión</a>
-      </div>
+      <a href="index.php" class="navbar-brand"  style="color: #0069D9;"><b>Lista de articulos</b></a>
+      <a class="btn-cerrar-sesion" style="color: #0069D9;" href="logout.php">Cerrar sesión</a>
     </div>
   </nav>
+  <div class="titulo bg-light text-center mb-5">
+    <div>
+      <h1 class="titulo-babyshower">BABY SHOWER</h1>
+    </div>
+    <div class="nombre-bebe">
+      <h3>(Nombre)</h3>
+    </div>
+    <span class="countdown small"><p style="font-size:16px;" id="clock"></p></span>
+  </div>
   <div class="container">
     <p class="text-usuario"><?php echo $_SESSION['nombre']; ?> estos son los articulo que has seleccionado...</p>
-    <span class="countdown" id="clock"></span>
   </div>
-
   <div class="container">
     <div class="card">
-      <div class="card-header">
+      <div class="card-header bg-primary text-white">
         Arículos seleccionados
       </div>
       <div class="card-body justify-content-center">
-        <?php echo isset($alert) ? $alert : ''; ?>
-        <?php
+        <?php echo isset($alert) ? $alert : ''; 
         // Conexión a la base de datos
         include('conexion.php');
 
@@ -80,35 +76,29 @@ if (!empty($_POST)) {
           echo '<div class="row justify-content-center">';
 
           while ($fila = mysqli_fetch_assoc($resultado)) {
-        ?>
-            <form action="detalle_articulo.php" method="post">
-              <div class="col-sm-2 col-md-3 text-center">
-                <div class="articulos">
-                  
-                  <input type="text" name="idArticulo" id="idArticulo" value="<?php echo ($fila["id_articulo"]) ?>" hidden>
-                  <img src="./admin/imagenes/<?php echo ($fila["imagen"]) ?>" class="img-fluid">
-                  <h5 class="card-title mt-3"><?php echo $fila["nombre"] ?></h5>
-                  <p class="card-text"><?php echo $fila["detalle"] ?></p>
-                  <input type="submit" class="btn btn-danger" value="Eliminar"></input>
-                </div>
-              </div>
-            </form>
-        <?php
+            echo '<form class="shadow m-2 border rounded" action="detalle_articulo.php" method="post">'.
+                  '<div class="col-sm-2 col-md-3 text-center">'.
+                    '<div class="articulos">'.
+                      '<input type="text" name="idArticulo" id="idArticulo" value="'.($fila["id_articulo"]).'" hidden>'.
+                      '<img src="./admin/imagenes/'.($fila["imagen"]).'" class="img-articulo2">'.
+                      '<h5 class="card-title mt-3"><'.$fila["nombre"].'</h5>'.
+                      '<p class="card-text">'.$fila["detalle"].'</p>'.
+                      '<input type="submit" class="btn btn-danger" value="Eliminar"></input>'.
+                    '</div>'.
+                  '</div>'.
+                '</form>';
           }
-
           echo '</div>';
         } else {
           echo '<div class="text-center">No ha seleccionado ningún artículo aún</div>';
         }
-
         ?>
       </div>
     </div>
-
   </div>
   <footer class="py-2 bg-light mt-auto inferior borde-superior">
     <div class="container-fluid px-4">
-      <div class="d-flex align-items-center justify-content-center small">
+      <div class="d-flex align-items-center justify-content-center">
         <div class="text-muted">
           Copyright &copy; <a target="_blank" href="https://www.linkedin.com/in/mauricio-castro-52b38b181/"> <b>Mauricio Castro 2023</b></a>
         </div>

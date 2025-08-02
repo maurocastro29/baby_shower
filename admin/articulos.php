@@ -92,7 +92,7 @@ if (isset($_REQUEST['id'])) {
                                         if ($fila["id_usuario"] != 3) {
                                     ?>
                                             <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3">
-                                                <div class="articulo-seleccionado">
+                                                <div class="articulo-seleccionado shadow">
                                                     <div class="div-iconos">
                                                         <a title="Editar articulo" href="articulos_editar.php?id=<?php echo $fila["id_articulo"]; ?>">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-pencil icono-izq" viewBox="0 0 16 16">
@@ -106,9 +106,9 @@ if (isset($_REQUEST['id'])) {
                                                         </a>
                                                     </div>
                                                     <div class="text-center">
-                                                        <img src="./imagenes/<?php echo $fila["imagen"]; ?>" class="img-fluid">
+                                                        <img src="./imagenes/<?php echo $fila["imagen"]; ?>" class="img-articulo rounded mt-2 img-seleccionado">
                                                         <h5 class="card-title mt-2"><?php echo $fila["nombre"]; ?></h5>
-                                                        <a href="articulos_detalle.php?id=<?php echo $fila['id_articulo']; ?>">Ver mas ...</a>
+                                                        <a href="articulos_detalle.php?id=<?php echo $fila['id_articulo']; ?>">Detalles</a>
                                                     </div>
                                                     
                                                 </div>
@@ -117,7 +117,7 @@ if (isset($_REQUEST['id'])) {
                                         } else {
                                         ?>
                                             <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3">
-                                                <div class="articulo-no-seleccionado">
+                                                <div class="articulo-no-seleccionado shadow">
                                                     <div class="div-iconos">
                                                         <a title="Editar articulo" href="articulos_editar.php?id=<?php echo $fila["id_articulo"]; ?>">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-pencil icono-izq" viewBox="0 0 16 16">
@@ -131,9 +131,9 @@ if (isset($_REQUEST['id'])) {
                                                         </a>
                                                     </div>
                                                     <div class="div-img text-center">
-                                                        <img src="./imagenes/<?php echo $fila["imagen"]; ?>" class="img-fluid">
+                                                        <img src="./imagenes/<?php echo $fila["imagen"]; ?>" class="img-articulo rounded mt-2">
                                                         <h5 class="card-title mt-2"><?php echo $fila["nombre"]; ?></h5>
-                                                        <a href="articulos_detalle.php?id=<?php echo $fila['id_articulo']; ?>">Ver mas ...</a>
+                                                        <a href="articulos_detalle.php?id=<?php echo $fila['id_articulo']; ?>">Detalles</a>
                                                     </div>
                                                     
                                                 </div>
@@ -147,7 +147,7 @@ if (isset($_REQUEST['id'])) {
                             } else {
                             ?>
                                 <div style="text-align: center;">
-                                    No hay articulos para mostrar...
+                                    No hay articulos para mostrar.
                                 </div>
                             <?php
                             }

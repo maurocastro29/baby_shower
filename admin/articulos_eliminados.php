@@ -93,7 +93,7 @@ if (isset($_REQUEST['id'])) {
                                     while ($fila = mysqli_fetch_assoc($resultado)) {
                                     ?>
                                         <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3">
-                                            <div class="articulo-eliminado">
+                                            <div class="articulo-eliminado shadow">
                                                 <div class="div-iconos-eliminados">
                                                     <a title="Editar articulo" href="articulos_editar.php?id=<?php echo $fila["id_articulo"]; ?>">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
@@ -108,9 +108,9 @@ if (isset($_REQUEST['id'])) {
                                                     </a>
                                                 </div>
                                                 <div class="text-center">
-                                                    <img src="./imagenes/<?php echo $fila["imagen"]; ?>" class="img-fluid">
+                                                    <img src="./imagenes/<?php echo $fila["imagen"]; ?>" class="img-articulo rounded mt-2">
                                                     <h5 class="card-title text-center mt-2"><?php echo $fila["nombre"]; ?></h5>
-                                                    <a href="articulos_detalle.php?id=<?php echo $fila['id_articulo']; ?>">Ver mas ...</a>
+                                                    <a href="articulos_detalle.php?id=<?php echo $fila['id_articulo']; ?>">Detalles</a>
                                                 </div>
                                                 
                                             </div>
@@ -133,7 +133,8 @@ if (isset($_REQUEST['id'])) {
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-center small">
                         <div class="text-muted">
-                            Copyright &copy; <a target="_blank" href="https://www.linkedin.com/in/mauricio-castro-52b38b181/"> Mauricio Castro 2023</a></div>
+                            Copyright &copy; <a target="_blank" href="https://www.linkedin.com/in/mauricio-castro-52b38b181/"> Mauricio Castro 2023</a>
+                        </div>
                         <!--    <div>
                             <a href="#">Privacy Policy</a>
                             &middot;

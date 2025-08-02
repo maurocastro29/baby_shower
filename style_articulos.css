@@ -1,3 +1,8 @@
+.menu{
+    position: sticky;
+    top: 0px;
+    z-index: 3;
+}
 img{
     width: 200px;
     height: 200px;
@@ -9,9 +14,7 @@ img{
     width: 200px;
     height: auto;
     margin: 5px;
-    border: 1px solid #c0bfbf;
     padding-bottom: 10px;
-    background-color: #c4caff;
 }
 
 .articulos2{
@@ -20,7 +23,24 @@ img{
     width: 200px;
     height: auto;
     margin: 5px;
-    border: 1px solid #c0bfbf;
+    padding-bottom: 10px;
+}
+
+.articulos2{
+    display: inline-block;
+    position: relative;
+    width: 200px;
+    height: auto;
+    margin: 5px;
+    padding-bottom: 10px;
+}
+
+.articulos2{
+    display: inline-block;
+    position: relative;
+    width: 200px;
+    height: auto;
+    margin: 5px;
     padding-bottom: 10px;
     background-color: #E6E6E6;
 }
@@ -35,7 +55,6 @@ img{
 
 .btn-cerrar-sesion{
     display: inline-block;
-
 }
 
 .borde-inferior{
@@ -44,24 +63,23 @@ img{
 
 .borde-superior{
     border-top: 1px solid #e9e7e7;
+    border-bottom: 1px solid #e9e7e7;
+}
+
+.borde-superior{
+    border-top: 1px solid #e9e7e7;
 }
 
 .titulo{
-    position: sticky;
-    top: 0px;
     background-color: #c4caff;
-    padding-top: 5px;
-    z-index: 2;
-    border-bottom: 1px solid #818181;
-}
-.titulo-babyshower{
-    color: #0069D9;
-    background-color: #c4caff;
-    height: 70px;
+    padding: 10px;
 }
 
-h1{
-    font-family: 'Pacifico', cursive;
+.titulo-babyshower{
+    color: #f2efef;
+    font-size:45px;
+    height: 70px;
+    color: #0069D9;
 }
 
 .mensaje-usuario{
@@ -70,7 +88,7 @@ h1{
 }
 .nombre-bebe{
     position: relative;
-    color: #5a5a5a;
+    color: #0069D9;
     bottom: 10px;
 }
 
@@ -87,9 +105,14 @@ h1{
 }
 
 .inferior{
-    position: fixed;
+    position: sticky;
     bottom: 0px;
     left: 0px;
     width: 100%;
+    z-index: 3;
 }
 
+.img-articulo {
+    width: 100%; /* La imagen ocupa el 100% del ancho del contenedor */
+    max-height: 280px; /* Inicialmente, la altura es 0 */
+}

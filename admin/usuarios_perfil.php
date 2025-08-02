@@ -102,6 +102,7 @@ if ($result_sql == 0) {
                                         </div>
                                         <!--FIN-->
                                         <div class="d-flex align-items-center justify-content-center mt-4 mb-0 btn-reservar">
+                                            <a href="usuarios_editar.php?id=<?php echo $_SESSION['idUser']; ?>" class="btn btn-primary text-white pb-2 pt-2 pr-2 mx-2">Editar Perfil</a>
                                             <a href="usuarios_cambiar_password.php" class="btn btn-primary text-white pb-2 pt-2 pr-2 mx-2">Cambiar contraseña</a>
                                             <a href="usuarios.php" class="btn btn-danger">Atras</a>
                                         </div>

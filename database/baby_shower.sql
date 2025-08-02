@@ -14,13 +14,13 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Schema baby_shower
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `baby_shower` DEFAULT CHARACTER SET utf8 ;
-USE `baby_shower` ;
+-- CREATE SCHEMA IF NOT EXISTS `baby_shower` DEFAULT CHARACTER SET utf8 ;
+-- USE `baby_shower` ;
 
 -- -----------------------------------------------------
 -- Table `baby_shower`.`tipo_usuarios`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `baby_shower`.`tipo_usuarios` (
+CREATE TABLE `tipo_usuarios` (
   `id_tipo` INT NOT NULL AUTO_INCREMENT,
   `tipo` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id_tipo`))
@@ -30,7 +30,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `baby_shower`.`estados`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `baby_shower`.`estados` (
+CREATE TABLE `estados` (
   `id_estado` INT NOT NULL AUTO_INCREMENT,
   `estado` VARCHAR(25) NOT NULL,
   PRIMARY KEY (`id_estado`))
@@ -40,7 +40,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `baby_shower`.`usuarios`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `baby_shower`.`usuarios` (
+CREATE TABLE `usuarios` (
   `id_usuario` INT NOT NULL AUTO_INCREMENT,
   `nombres` VARCHAR(50) NOT NULL,
   `apellidos` VARCHAR(50) NOT NULL,
@@ -54,12 +54,12 @@ CREATE TABLE IF NOT EXISTS `baby_shower`.`usuarios` (
   INDEX `fk_usuarios_estados1_idx` (`id_estado` ASC),
   CONSTRAINT `fk_usuarios_tipo_usuarios`
     FOREIGN KEY (`id_tipo`)
-    REFERENCES `baby_shower`.`tipo_usuarios` (`id_tipo`)
+    REFERENCES `tipo_usuarios` (`id_tipo`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_usuarios_estados1`
     FOREIGN KEY (`id_estado`)
-    REFERENCES `baby_shower`.`estados` (`id_estado`)
+    REFERENCES `estados` (`id_estado`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -68,7 +68,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `baby_shower`.`articulos`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `baby_shower`.`articulos` (
+CREATE TABLE `articulos` (
   `id_articulo` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(50) NOT NULL,
   `detalle` VARCHAR(200) NULL,
@@ -80,12 +80,12 @@ CREATE TABLE IF NOT EXISTS `baby_shower`.`articulos` (
   INDEX `fk_articulos_usuarios1_idx` (`id_usuario` ASC),
   CONSTRAINT `fk_articulos_estados1`
     FOREIGN KEY (`estado`)
-    REFERENCES `baby_shower`.`estados` (`id_estado`)
+    REFERENCES `estados` (`id_estado`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_articulos_usuarios1`
     FOREIGN KEY (`id_usuario`)
-    REFERENCES `baby_shower`.`usuarios` (`id_usuario`)
+    REFERENCES `usuarios` (`id_usuario`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

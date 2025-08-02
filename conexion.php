@@ -1,5 +1,5 @@
 <?php
-    $host = "localhost:2974";
+    $host = "localhost";
     $user = "root";
     $clave = "";
     $bd = "baby_shower";

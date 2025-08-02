@@ -84,13 +84,17 @@ if (empty($_POST)) {
                                     <div class="row justify-content-center">
                                         <div class="col-sm-3 col-md-4">
                                             <div class="articulos">
-                                                <img src="imagenes/<?php echo $fila["imagen"]; ?>" class="img-fluid">
-                                                <h5 class="card-title"><?php echo $fila["nombre"]; ?></h5>
-                                                <p class="card-text"><?php echo $fila["detalle"]; ?></p>
+                                                <img src="imagenes/<?php echo $fila["imagen"]; ?>" class="img-fluid rounded">
                                             </div>
                                         </div>
-                                        <div class="col-sm-3 col-md-4 text-center">
-                                            <div class="">
+                                        <div class="col-sm-3 col-md-8 ">
+                                            <div>
+                                                <h5 class="card-title">Nombre <br></h5>
+                                                <p class="card-text"><?php echo $fila["nombre"]; ?></p>
+                                                <h5 class="">Descripción</h5>
+                                                <p ><?php echo $fila["detalle"]; ?></p>
+                                            </div>
+                                            <div class="text-center mt-4">
                                                 <?php if ($fila["id_usuario"] != 3) { ?>
                                                     <div class=" btn btn-success">
                                                         <h5 class="card-title">Artículo elegido por:</h5><br>
