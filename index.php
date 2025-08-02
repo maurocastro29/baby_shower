@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (empty($_SESSION['userBabyShowerActive'])) {
-  header('location: login.php');
+  header('location: home.php');
 }
 if (!empty($_POST)) {
   include('conexion.php');
@@ -19,6 +19,7 @@ if (!empty($_POST)) {
                 </div>';
   }
 }
+$usuarioMaestro = $_SESSION['usuario_maestro'];
 ?>
 <!DOCTYPE html>
 <html>
@@ -46,15 +47,12 @@ if (!empty($_POST)) {
       <h1 class="titulo-babyshower">BABY SHOWER</h1>
     </div>
     <div class="nombre-bebe">
-      <h3 style="font-family: cursive;" >Jossua Zain</h3>
-    </div>
-    <div class="nombre-bebe">
       <h3>(Nombre)</h3>
     </div>
     <span class="countdown small"><p style="font-size:16px;" id="clock"></p></span>
   </div>
   <div class="container">
-    <p class="text-usuario">Hola <?php echo $_SESSION['nombre']; ?> Bienvenid@. Puedes seleccionar el artículo que desees.</p>
+    <p class="text-usuario">Hola <?php echo $_SESSION['nombre']; ?>. Puedes seleccionar el artículo que desees.</p>
   </div>
   <div class="container">
     <div class="card">
@@ -67,7 +65,7 @@ if (!empty($_POST)) {
           include('conexion.php');
 
           // Consulta para obtener los datos de la tabla
-          $sql = "SELECT id_articulo, nombre, detalle, imagen, estado, id_usuario FROM articulos WHERE estado = 1";
+          $sql = "SELECT id_articulo, nombre, detalle, imagen, estado, id_usuario FROM articulos WHERE estado = 1 AND id_maestro_usuario = '$usuarioMaestro'";
           $resultado = mysqli_query($conexion, $sql);
 
           if (mysqli_num_rows($resultado) > 0) {
@@ -80,7 +78,7 @@ if (!empty($_POST)) {
                           '<div class="col-sm-2 col-md-3 text-center">'.
                             '<div class="articulos">'.
                               '<input type="text" name="idArticulo" id="idArticulo" value="'.($fila["id_articulo"]) .'" hidden>'.
-                              '<img src="./admin//imagenes/'.($fila["imagen"]).'" class="img-articulo rounded">'.
+                              '<img src="./admin/imagenes/'.($fila["imagen"]).'" class="img-articulo rounded">'.
                               '<div style="padding-left: 5px; padding-right: 5px;">'.
                                 '<h5 class="card-title mt-3">'.$fila["nombre"].'</h5>'.
                                 '<p>'.$fila["detalle"].'</p>'.
@@ -94,7 +92,7 @@ if (!empty($_POST)) {
                           '<div class="col-sm-2 col-md-3 text-center">'.
                             '<div class="articulos2">'.
                               '<input type="text" name="idArticulo" id="idArticulo" value="'.($fila["id_articulo"]) .'" hidden>'.
-                              '<img src="./admin//imagenes/'.($fila["imagen"]).'" class="img-articulo rounded">'.
+                              '<img src="./admin/imagenes/'.($fila["imagen"]).'" class="img-articulo rounded">'.
                               '<div style="padding-left: 5px; padding-right: 5px;">'.
                                 '<h5 class="card-title mt-3">'.$fila["nombre"].'</h5>'.
                                 '<p>'.$fila["detalle"].'</p>'.
@@ -108,7 +106,7 @@ if (!empty($_POST)) {
                           '<div class="col-sm-2 col-md-3 text-center">'.
                             '<div class="articulos2">'.
                               '<input type="text" name="idArticulo" id="idArticulo" value="'.($fila["id_articulo"]) .'" hidden>'.
-                              '<img src="./admin//imagenes/'.($fila["imagen"]).'" class="img-articulo rounded">'.
+                              '<img src="./admin/imagenes/'.($fila["imagen"]).'" class="img-articulo rounded">'.
                               '<div style="padding-left: 5px; padding-right: 5px;">'.
                                 '<h5 class="card-title mt-3">'.$fila["nombre"].'</h5>'.
                                 '<p>'.$fila["detalle"].'</p>'.
@@ -121,21 +119,18 @@ if (!empty($_POST)) {
               
             }
           } else {
-            echo '<div class="text-center">Todos los artículos han sido seleccionados</div>';
+            echo '<div class="text-center">No se han encontrado articulos a mostrar</div>';
           }
         ?>
       </div>
-    <?php } else { ?>
-      <div class="text-center">Todos los artículos han sido seleccionados</div>
-    <?php } ?>
     </div>
     </div>
   </div>
-  <footer class="py-4 bg-light mt-auto">
+  <footer class="py-3 bg-light mt-5 inferior borde-superior">
     <div class="container-fluid px-4">
       <div class="d-flex align-items-center justify-content-center">
         <div class="text-muted">
-          Copyright &copy; <a target="_blank" href="https://www.linkedin.com/in/mauricio-castro-52b38b181/"> <b>Mauricio Castro 2023</b></a>
+          Copyright &copy; <a target="_blank" href="https://www.linkedin.com/in/mauricio-castro-52b38b181/"> <b>Mauricio Castro 2024</b></a>
         </div>
       </div>
     </div>

@@ -6,6 +6,7 @@
     if ($_SESSION['id_tipo'] != 1) {
         header('location: ../');
     }
+    $usuario_maestro = $_SESSION['usuario_maestro'];
 ?>
 
 <!DOCTYPE html>
@@ -44,7 +45,8 @@
                                 <div class="card-footer d-flex align-items-center justify-content-between">
                                     <?php 
                                         include('../conexion.php');
-                                        $sql = "SELECT count(*) AS total_users FROM usuarios";
+                                        
+                                        $sql = "SELECT count(u.id_usuario) AS total_users FROM usuarios As u WHERE u.id_maestro_usuario = '".$usuario_maestro."'";
                                         $result = mysqli_query($conexion, $sql);
                                         if($dato = mysqli_fetch_array($result)){
                                             echo '<spam>Total: '.$dato['total_users'].'</spam>';
@@ -60,7 +62,7 @@
                                 <div class="card-footer d-flex align-items-center justify-content-between">
                                     <?php
                                         include('../conexion.php');
-                                        $sql = "SELECT count(*) AS total_articulos FROM articulos";
+                                        $sql = "SELECT count(*) AS total_articulos FROM articulos WHERE id_maestro_usuario = '".$usuario_maestro."'";
                                         $result = mysqli_query($conexion, $sql);
                                         if($dato = mysqli_fetch_array($result)){
                                             echo '<spam>Total: '.$dato['total_articulos'].'</spam>';
@@ -75,7 +77,7 @@
                                 <div class="card-footer d-flex align-items-center justify-content-between">
                                     <?php
                                         include('../conexion.php');
-                                        $sql = "SELECT count(*) AS articulos_elegidos FROM articulos WHERE id_usuario <> 3";
+                                        $sql = "SELECT count(*) AS articulos_elegidos FROM articulos WHERE id_usuario <> 3 AND id_maestro_usuario = '".$usuario_maestro."'";
                                         $result = mysqli_query($conexion, $sql);
                                         if($dato = mysqli_fetch_array($result)){
                                             echo '<spam>Total: '.$dato['articulos_elegidos'].'</spam>';
@@ -90,7 +92,7 @@
                                 <div class="card-footer d-flex align-items-center justify-content-between">
                                 <?php
                                         include('../conexion.php');
-                                        $sql = "SELECT count(*) AS articulos_elegidos FROM articulos WHERE id_usuario = 3";
+                                        $sql = "SELECT count(*) AS articulos_elegidos FROM articulos WHERE id_usuario = 3 AND id_maestro_usuario = '".$usuario_maestro."'";
                                         $result = mysqli_query($conexion, $sql);
                                         if($dato = mysqli_fetch_array($result)){
                                             echo '<spam>Total: '.$dato['articulos_elegidos'].'</spam>';
@@ -625,7 +627,7 @@
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-center small">
                         <div class="text-muted">
-                            Copyright &copy; <a target="_blank" href="https://www.linkedin.com/in/mauricio-castro-52b38b181/"> Mauricio Castro 2023</a></div>
+                            Copyright &copy; <a target="_blank" href="https://www.linkedin.com/in/mauricio-castro-52b38b181/"> Mauricio Castro 2024</a></div>
                     <!--    <div>
                             <a href="#">Privacy Policy</a>
                             &middot;

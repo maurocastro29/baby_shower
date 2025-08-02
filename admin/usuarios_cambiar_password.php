@@ -145,7 +145,7 @@ $user = $_SESSION['usuario'];
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-center small">
                         <div class="text-muted">
-                            Copyright &copy; <a target="_blank" href="https://www.linkedin.com/in/mauricio-castro-52b38b181/"> Mauricio Castro 2023</a></div>
+                            Copyright &copy; <a target="_blank" href="https://www.linkedin.com/in/mauricio-castro-52b38b181/"> Mauricio Castro 2024</a></div>
                         <!--    <div>
                             <a href="#">Privacy Policy</a>
                             &middot;

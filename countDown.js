@@ -19,7 +19,6 @@ const countdown = (deadline, elem, finalMessage) => {
     const el = document.getElementById(elem);
     const timerUpdate = setInterval( () => {
         let t = getRemainTime(deadline);
-        el.innerHTML = `Falta: ${t.remainDdays}d: ${t.remainHours}h: ${t.remainMinutes}m: ${t.remainSeconds}s`;
         if(t.remainDdays == 1){
             el.innerHTML = `Falta: ${t.remainDdays}d: ${t.remainHours}h: ${t.remainMinutes}m: ${t.remainSeconds}s`;
         }else if(t.remainDdays > 1){
@@ -44,11 +43,10 @@ const countdown = (deadline, elem, finalMessage) => {
     }, 1000)
 };
 
-countdown('Aug 30 2024 16:58:30 GMT-0500', 'clock', 'Bienvenidos a mi babyshower');
+countdown('Dec 01 2024 16:30:00 GMT-0500', 'clock', 'Bienvenidos a mi babyshower');
 
-inputP = document.getElementById('inputPassword');
-
-verP = document.getElementById('verPassw');
+let inputP = document.getElementById('inputPassword');
+let verP = document.getElementById('verPassw');
 
 verP.addEventListener("click", function(){
     if(inputP.type == "password"){
@@ -59,24 +57,3 @@ verP.addEventListener("click", function(){
 });
 
 //Account Password: Z73uHHNqHoa0F
-
-console.log(getRemainTime('Jun 04 2023 16:30:00 GMT-0500'));
-
-
-let inputP = document.getElementById('inputPassword');
-
-let verP = document.getElementById('verPassw');
-
-verP.addEventListener("click", function(){
-    if(inputP.type == "password"){
-        inputP.type = "text";
-    }else{
-        inputP.type = "password";
-    }
-});
-/*
-MySQL DB Name: if0_37108021_babyshowerprueba
-MySQL User Name: 	if0_37108021
-MySQL Password: Z73uHHNqHoa0F
-MySQL Host Name: sql110.infinityfree.com
-*/
