@@ -39,7 +39,9 @@ if (!empty($_POST)) {
   <div class="titulo text-center">
     <div>
       <h1 class="titulo-babyshower">BABY SHOWER</h1>
-      <h3 style="font-family: cursive;" class="nombre-bebe">Jossua Zain</h3>
+    </div>
+    <div class="nombre-bebe">
+      <h3 style="font-family: cursive;" >Jossua Zain</h3>
     </div>
   </div>
 
@@ -96,13 +98,50 @@ if (!empty($_POST)) {
       <div class="text-center">Todos los artículos han sido seleccionados</div>
     <?php } ?>
     </div>
+     <hr>
+      
+    <!--articulos elegidos-->
+    <div class="card-body justify-content-center">
+    
+      <div class="text-center">
+        <h4>Articulos elegidos</h4>
+      </div>
+      <?php 
+      include('conexion.php');
+      $sql2 = "SELECT * FROM articulos WHERE id_usuario <> 3 AND estado = 1";
+          $resultado2 = mysqli_query($conexion, $sql2);
+          if (mysqli_num_rows($resultado2) > 0) {
+            // Muestra los datos de la tabla
+            echo isset($alert) ? $alert : '';
+            echo '<div class="row justify-content-center">';
+            while ($fila2 = mysqli_fetch_assoc($resultado2)) {
+          ?>
+              <form action="" method="post">
+                <div class="col-sm-2 col-md-3 text-center">
+                  <div class="articulos2">
+                    <input type="text" name="idArticulo" id="idArticulo" value="<?php echo ($fila2["id_articulo"]) ?>" hidden>
+                    <img src="./admin//imagenes/<?php echo ($fila2["imagen"]) ?>" class="img-fluid">
+                    <div style="padding-left: 5px; padding-right: 5px;">
+                      <h5 class="card-title mt-3"><?php echo $fila2["nombre"] ?></h5>
+                      <p><?php // echo $fila2["detalle"] ?></p>
+                    </div>
+                    <input type="button" class="btn btn-danger" value="Articulo elegido"></input>
+                  </div>
+                </div>
+              </form>
+            <?php } ?>
+        </div>
+      <?php } ?>
+    </div>
   </div>
   </div>
-  <footer class="py-4 bg-light mt-auto">
+  <br><br>
+  <footer class="py-2 bg-light mt-auto inferior borde-superior">
     <div class="container-fluid px-4">
       <div class="d-flex align-items-center justify-content-center small">
         <div class="text-muted">
-          Copyright &copy; <a target="_blank" href="https://www.linkedin.com/in/mauricio-castro-52b38b181/"> Mauricio Castro 2023</a></div>
+          Copyright &copy; <a target="_blank" href="https://www.linkedin.com/in/mauricio-castro-52b38b181/"> <b>Mauricio Castro 2023</b></a>
+        </div>
       </div>
     </div>
   </footer>
